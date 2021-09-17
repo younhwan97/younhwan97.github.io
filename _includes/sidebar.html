@@ -11,11 +11,11 @@
   <span class="author_bio mbm">{{ author.bio }}</span>
   <nav class="nav">
     <ul class="nav-list">
-      <li class="nav-item">
+      <li class="nav-item" style="font-size: 20px">
         <a href="{{ site.url }}/">home</a>
       </li>
       {% for page in site.pages %} {% if page.title %}
-      <li class="nav-item">
+      <li class="nav-item" style="font-size: 20px">
         <a href="{{ site.url }}{{ page.url }}">{{ page.title }}</a>
       </li>
       {% endif %} {% endfor %}
