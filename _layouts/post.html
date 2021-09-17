@@ -5,12 +5,7 @@ layout: default
 <a
         class="btn"
         href="javascript:void(0);"
-        onclick="
-        if(document.referrer == ''){
-          window.location='https://younhwan97.github.io';
-        }else{
-          history.go(-1)
-        }"
+        onclick="document.referrer ? history.back() : location.href='https://younhwan97.github.io';"
 >
   <i class="fa fa-fw fa-chevron-left"></i> BACK
 </a>
