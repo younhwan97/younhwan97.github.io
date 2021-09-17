@@ -2,5 +2,5 @@
 
 label: Ability
 id : cs
-aspects: Motivation, GitHub, Kotlin, Design Pattern,Cooperation, -
-percentage: 100, 10, 10, 10,70,0
+aspects: Motivation, Cooperation ,GitHub, Kotlin, Design Pattern, Algorithm
+percentage: 100, 70, 10, 10 ,10, 10
