@@ -2,7 +2,7 @@
 layout: post
 title: "[Kotlin] 코틀린의 입력과 출력"
 excerpt: "코틀린의 입력과 출력에 대해서 알아본다"
-categories: [kotlin]
+categories: [Kotlin]
 comments: true
 ---
 
