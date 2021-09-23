@@ -6,7 +6,9 @@ categories: [Kotlin]
 comments: true
 ---
 
-## <span style="color:#0f7b6c">1. 코틀린 언어의 개요</span> 
+## <span style="color:#0f7b6c">1. 코틀린 언어의 개요</span>
+---
+
 - Intellj IDEA를 제작한 JetBrains에서 만든 프로그래밍 언어
 - 2011년에 공개된 이후, 2017년부터 안드로이드 개발 공식 언어로 구글이 코틀린을 소개
 - 현재 Java 대체 언어로 많은 주목을 받는 중
@@ -28,6 +30,8 @@ comments: true
 - OOP와 Functional Programming 모두 지원
 
 ## <span style="color:#0f7b6c">2. 변수와 자료형</span>
+---
+
 >**변수**란 프로그래밍 과정에서 사용할 값을 저장하기 위한 공간이다. <br><br>
 **자료형**이란 값을 저장 공간에 어떤 방식으로 저장할지 정의하는 것 이다.
 
@@ -84,6 +88,8 @@ comments: true
 null을 허용하는 변수가 null값이 아닌 다른 값을 가지고 있을 때, !! 연산자를 이용해 null을 허용하지 않는 변수로 변경할 수 있다.
 
 ## <span style="color:#0f7b6c">3. 함수</span>
+---
+
 코틀린 함수의 기본 문법
 <pre><code>
     fun 함수명(매개변수) : 반환값 타입 {
@@ -129,6 +135,8 @@ null을 허용하는 변수가 null값이 아닌 다른 값을 가지고 있을 
 </code></pre>
 
 ## <span style="color:#0f7b6c">4. 제어문</span>
+---
+
 - 프로그램 코드는 위에서 아래로 흘러간다. ↓
 - 이 흐름을 변경하고자 할 때 사용하는 것이 제어문이다.
 - 제어문은 **분기문**과 **반복문**으로 구분된다.
@@ -184,3 +192,43 @@ when을 활용한 변수 초기화
 
     var str1 = setValue(1) // str1이 "문자열1"로 초기화 된다.
 </code></pre>
+
+#### 4-3. for
+<pre><code>
+    var arr1 = 1..10
+
+    for (item in arr1){
+        
+    }
+
+    // 반복문이 총 10번 실행될 것 이다.
+    // var arr2 = 1..10 step 2
+    // arr2를 사용하면 반복문이 총 5번 실행될 것 이다.
+    //
+    // var arr3 = 10 downTo 1 step 1
+    // arr3를 사용하는 반복문이 총 10번 실행될 것 이다. 
+</code></pre>
+
+#### 4-4. While
+- 주어진 조건이 만족할 경우 반복되는 반복문
+- for의 경우 실행 횟수를 알고 있을 때, while의 경우 실행 횟수를 알지 못할 때 사용.
+- 조건식이 상단에 있기 때문에, 조건식이 초기에 거짓이면 단 한번도 수행되지 않는다.
+<pre><code>
+    whilte(조건식){
+        // 반복 할 코드
+    }
+</code></pre>
+
+#### 4-5. do While
+- 조건식이 초기에 거짓이더라도 최소 1번은 실행되는 while 반복문
+<pre><code>
+    do{
+        // 반복 할 코드
+    } whilte(조건식)
+</code></pre>
+
+#### 4-6. break, continue, return
+- return : 함수의 수행을 중단하고 호출한 쪽으로 되돌아 간다.
+- break : 반복 횟수가 남아 있더라도 반복을 중단한다.
+- continue : 반복문에서 코드가 남아 있더라도 다음 반복으로 넘어간다.
+
