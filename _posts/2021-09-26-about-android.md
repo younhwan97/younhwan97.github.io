@@ -92,3 +92,47 @@ Language : 현재 Java와 Kotlin을 사용해 안드로이드 어플리케이션
 > 안드로이드 어플리케이션은 4대 구성 요소들을 통합 관리하는 번들 개념이다. <br><br>
 각각의 구성요소가 모여 하나의 안드로이드 어플리케이션을 이룬다. 각 구성요소는 자신들이 실행될 적절한 상황이 왔을 때, 개발자가 작성한 코드를 실행한다.
 
+![안드로이드 4대 구성요소]({{site.url}}/img/Android/android_4_components.png){:height="500" width="700"} 
+
+#### 4-2. 프로젝트의 구조
+![안드로이드 프로젝트 구조]({{site.url}}/img/Android/project-structure.png){:height="300"} 
+
+- AndroidManifest.xml : 안드로이드 어플리케이션에 관련된 설정 파일
+- java 폴더 : 개발자가 작성하는 소스 코드
+- res 폴더 : 이미지, 사운드, 데이터 등 어플리케이션에서 필요한 리소스
+
+#### 4-3. 동작원리
+
+**어플리케이션 설치**
+1. 제작된 어플리케잇녀은 apk라는 파일로 압축되어 마켓에 등록된다.
+2. apk 파일을 단말기에 다운로드하게 되면 자동으로 설치가 이뤄진다.
+3. 안드로이드 OS는 설치가 완료되면 **AndroidManifest.xml** 파일의 내용을 분석하게 된다.
+4. 여기에서 안드로이드 4대 구성요소 중 어떤 것들이 있는지 파악하여 이를 정리하게 된다.
+
+**어플리케이션 실행**
+- 안드로이드 어플리케이션이 실행되면 안드로이드 OS는 첫 번째 화면을 사용자에게 보여주려고 한다.
+- 이 때 **AndroidManifest.xml**에 있는 여러 구성 요소 중 activity를 찾는다.
+- 이 activity 중에 다음과 같이 작성되어 있는 것을 첫 화면을 관리하는 요소로 판단하고 이를 실행시켜 준다.
+
+```
+    <activity
+        android:name=".MainActivity"
+        android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+```
+
+- activity의 name 속성의 클래스의 객체를 생성한 후 onCreate 메서드를 호출한다.
+- 이 때 setContentView 메서드에 관리할 화면을 지정하는데 res 폴더의 layout에 있는 xml 파일을 지정하게 된다.
+- 이를 통해 화면을 구성하고 단말기 화면에 나타나게 된다.
+
+```
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+    }
+```
