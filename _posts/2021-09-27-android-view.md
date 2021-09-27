@@ -5,6 +5,7 @@ excerpt: "안드로이드 View에 관해 알아본다."
 categories: [Android]
 comments: true
 ---
+![android]({{site.url}}/img/Android/giphy.gif)
 
 - 안드로이드에서 눈에 보이는 모든 요소를 View라고 부른다.
 - 개발자가 배치하는 모든 View 들은 Class로 제공되는데 모두 View라는 클래스를 상속받고 있다.
