@@ -87,6 +87,8 @@ Layout의 경우 다른 View를 포함하고 관리하며, 눈에 보이는 View
 |stretchColumns|TableRow 안의 View들이 가로로 늘어날 비율을 조정한다.|
 |shrinkColumns|TableRow 안의 View들이 화면에 보일 수 있도록 줄어들게 한다.|
 
+<br>
+
 **TableRow 주요 속성**
 
 |속성|내용|
@@ -160,3 +162,210 @@ Relative layout과 같은 경우는 View를 가운데 설정할 때만 스프링
 
 - Space는 layout은 아니지만 layout을 이용해 화면을 구성할 때 보조 수단으로 사용하는 view이다.
 - 화면을 구성할 때 여백이 필요한 경우 사용한다.
+
+## <span style="color:#0f7b6c">3. Widget</span>
+
+- 안드로이드의 view 중 기능을 갖고 사용자와 상호작용을 하는 것들을 widget이라고 부른다.
+- Widget은 layout 위에 배최되어 화면에 나타나고 코드를 통해 widget을 통제하여 사용자와 소통하는 수단이 된다.
+
+**Widget 사용 패턴**
+1. Layout에 사용하고자 하는 widget을 배치한다.
+2. 이 때, activity가 실행되면 화면이 구성되고 화면에 배채된 모든 view들은 **객체**로 생성된다.
+3. **객체**로 생성된 view 중에 필요한 widget들의 주소 값을 얻어와 코드로 이들을 통제한다.
+4. 필요하다면 이벤트에 대한 코드를 구성하여 사용한다.
+
+**Widget 객체의 주소 값 가져오기**
+
+Activity 객체가 생성되면 화면에 배치된 모든 view는 객체로 생성된다. 이때 해당 객체를 사용하기 위해서는 객체의 주소값이 필요하다.
+```
+    val textView1 = findViewById<TextView>(R.id.textView1)
+```
+위와 같은 코드를 통해 생성된 view의 주소값을 얻어올 수 있다. <br>
+여기서 코틀린으로 안드로이드를 개발하는 장점이 등장하는데, 코틀린은 view의 id와 같은 이름의 변수가 자동으로 생성되고 해당 변수는 객체의 주소를 갖는다.
+
+#### 3-1. TextView
+
+- 사용자에게 전달하고자 하는 문자열을 표시하는 View(widget)
+
+#### 3-2. Button
+
+- 사용자가 클릭(터치)하면 개발자가 만든 코드를 동작시켜 주는 view
+- Button은 문자열을 표시하는 Button과 이미지를 표시하는 ImageButton이 있다.
+
+**Button의 이벤트**
+
+- **OnClick:** 사용자가 Button을 Click하면 발생하는 이벤트
+
+**EX) Button에 이벤트 리스너를 장착해 보기** <br>
+상황: 버튼이 클릭되면 textView의 문자열을 "버튼이 클릭 되었습니다."로 변경한다.
+```
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+            // 방법 1
+            // 리스너 객체를 생성하고 버튼에 setOnClickListener를 통해 리스너를 장착한다.
+            button.setOnClickListener(listener1)
+
+            // 방법 2
+            // 코틀린의 경우 고차함수를 이용해 리스너를 생성할 수 있다.
+            button.setOnClickListener {
+                textView.text = "버튼이 클릭 되었습니다."
+            }
+        }
+
+        var listener1 = object : View.OnClickListener{
+            override fun onClick(p0: View?) {
+                textView.text = "버튼이 클릭 되었습니다."
+            }
+        }
+    }
+
+```
+
+하나의 리스너에서 여러 view를 분기해서 처리하고 싶을때는 일반적으로 **방법1**을 사용하고, 각각의 view를 따로 처리하고 싶을 때는 **방법2**를 사용한다.
+
+#### 3-3. EditText
+
+- 사용자에게 문자열 데이터를 입력 받을 때 사용하는 view
+
+![edit text list]({{site.url}}/img/Android/edittextlist.png){:height="300"} 
+
+Plain Text부터 시작해 아래 밑줄 표시가 된 view가 모두 editText view이다. 모두 똑같은 editText이지만 목적에 따라 각각의 view가 설정값이 조금씩 다르다.
+
+**EditText 주요 속성**
+
+|속성|내용|
+|---|---|
+|text|표시할 문자열을 설정한다.|
+|hint|입력된 값이 없을 경우 안내 문구를 설정한다.|
+|inputType|입력 값에 대해 설정한다. 표시되는 형식, 나타나는 키보드 등에 영향을 준다.|
+|imeOptions|나타나는 키보드의 enter 키 모양을 설정한다.|
+
+**EX) text 속성을 이용해보자** <br>
+상황: 버튼을 클릭했을 때 editText의 내용을 textView에 그대로 표시한다.
+```
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            button3.setOnClickListener {
+                textView2.text = editTextTextPersonName2.text
+
+                // 키보드가 사라지게 하는 방법
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(editTextTextPersonName2.windowToken, 0)
+            }
+        }
+    }
+```
+
+**EditText 이벤트**
+
+- **TextWatcher:** 사용자가 입력한 내용을 실시간으로 감시한다.
+- **EditorAction:** 키보드의 Enter 키를 눌럿을 때 발생하는 이벤트
+
+**EX) EditText 이벤트를 이용해 보자** <br>
+상황: 이벤트 리스너를 이용해 editText값이 변경되었을 때 textView값을 변경해 본다.
+
+```
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            editTextTextPersonName2.addTextChangedListener(listenr1)
+        }
+
+        val listenr1 = object : TextWatcher{
+            // 문자열이 변경되기 전
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            // 문자열 변경 작업이 완료되었을 때
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            // 변경된 문자열이 화면에 반영되었을 때
+            // 주로 이 메소드를 사용한다.
+            override fun afterTextChanged(p0: Editable?) {
+                textView2.text = p0
+            }
+        }
+    }
+```
+실시간으로 editText 내용이 변경되는 것을 감시하는 watcher 이벤트 리스너의 경우 enter 키를 누르는 등의 액션이 필요없다.
+
+```
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            editTextTextPersonName2.setOnEditorActionListener { textView, i, keyEvent ->
+                textView2.text = editTextTextPersonName2.text
+                false
+            }
+            // false를 반환하면 키보드가 내려간다.
+        }
+    }
+```
+
+#### 3-4. TextInputLayout
+
+- EditText을 보완한 view
+
+![edit text list]({{site.url}}/img/Android/textinputlayout.png){:height="500"} 
+
+**TextInputLayout 주요 속성**
+
+|속성|내용|
+|---|---|
+|hint|입력된 값이 없을 경우 안내 문구를 설정한다. <br> editText와 달리 문자열을 입력하면 상단 부분으로 올라간다.|
+|counterEnabled|입력한 글자의 수가 나타난다.|
+|counterMaxLength|지정된 글자수를 넘으면 붉은 색으로 표시해준다.|
+
+**EX) TextInputLayout 속성을 이용해 보자** <br>
+상황: 버튼을 클릭했을 때 TextInputLayout의 값을 textView에 표시한다.
+```
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            button2.setOnClickListener {
+                textView.text = textInputLayout.editText?.text
+                // textInputLayout 안에 있는 editText에 접근해 text를 가져와야 한다!
+            }
+        }
+    }
+```
+
+![edit text list]({{site.url}}/img/Android/textinputlayout2.png){:height="300"} 
+
+#### 3-5. ImageView
+
+- 이미지를 사용자에게 보여주고자 하는 목적으로 제공되는 view
+
+![edit text list]({{site.url}}/img/Android/imageView.png){:height="500"} 
+
+프로젝트를 보면 res 폴더 아래 drawable, mipmap 폴더에 이미지가 있다. 
+
+**Drawable vs Mipmap**
+
+- 안드로이드에서 이미지르 넣은 폴더는 drawable 폴더이다.
+- 안드로이드 버전이 변경되면서 mipmap이라는 폴더를 제공하는데, 이 폴더의 이미지는 비트맵이 아닌 벡터 방식으로 이미지를 그리게 된다.
+- mipmap 폴더의 이미지는 런처 아이콘용 이미지를 넣는 폴더로 사용한다.
+
+#### 3-6. ToggleButton
+
+- 환경설정과 같은 화면에서 어플리케이션의 기능을 on/off 하는 기능을 제공하고자 할 때 사용
+
+#### 3-7. CheckBox
+
+- 선택할 수 있는 항목 들을 제공하고 체크를 통해 선택할 수 있도록 하는 view
+- 각 checkBox는 독립되어 있기 때문에, 다수의 checkBox를 동시에 선택할 수 있다. 
+
