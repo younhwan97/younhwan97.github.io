@@ -5,6 +5,7 @@ excerpt: "안드로이드 View에 관해 알아본다."
 categories: [Android]
 comments: true
 ---
+
 ![android]({{site.url}}/img/Android/giphy.gif)
 
 - 안드로이드에서 눈에 보이는 모든 요소를 View라고 부른다.
@@ -29,6 +30,7 @@ Layout의 경우 다른 View를 포함하고 관리하며, 눈에 보이는 View
 **Widget**
 
 - 문자열 입력, 문자열 출력 등 어떤 기능을 가지고 있고 사용자와 상호 작용하는 View들을 통칭해서 Widget이라고 부른다.
+<br><br>
 
 #### 1-1. 화면 구성
 
@@ -45,6 +47,7 @@ Layout의 경우 다른 View를 포함하고 관리하며, 눈에 보이는 View
 - 안드로이드는 화면을 구성할 때 배치되는 View들이 어디에 배치된다는 좌표를 설정하지 않는다.
 - 다른 단말기에서도 자연스럽게 보이기 위해 자표가 아닌 배치되는 모양을 결정한다.
 - 개발자가 배치되는 모양을 결정하고 View들을 배치하면 안드로이드 OS가 단말기에 적합한 좌표를 계산하고 배치한다.
+<br><br>
 
 #### 2-1. LinearLayout
 
@@ -54,11 +57,14 @@ Layout의 경우 다른 View를 포함하고 관리하며, 눈에 보이는 View
 
 ![android linear layout]({{site.url}}/img/Android/maxresdefault-1.jpeg){:height="500" width="800"} 
 
+**LinearLayout의 주요 속성**
+
 |주요 속성|내용|
 |---|---|
 |orientation|View들이 배치될 방향을 설정할 수 있다.|
 |weight|LinearLayout 안에 배치되는 View들의 비율을 설정한다. <br>일단 배치를 하고, 남은 공간을 기준으로 정한다!|
 
+<br>
 
 #### 2-2. FrameLayout
 
@@ -66,6 +72,8 @@ Layout의 경우 다른 View를 포함하고 관리하며, 눈에 보이는 View
 - 화면을 구성하기 보단 탭 등과 같은 기능을 만들 때 사용하는 경우가 많음
 - FrameLayout에 배치되는 View는 모두 좌측 상단에 배치된다.
 - margin 속성이나 layout_gravity 속성을 이용해 배치되는 위치를 결정하여 사용한다.
+
+<br>
 
 #### 2-3. TableLayout
 
@@ -96,6 +104,8 @@ Layout의 경우 다른 View를 포함하고 관리하며, 눈에 보이는 View
 |layout_column|View가 배치될 위치를 설정한다.|
 |layout_span|View가 배치될 칸의 개수를 설정한다.|
 
+<br>
+
 #### 2-4. GridLayout
 
 - Grid를 설정하여 View를 배치하는 Layout
@@ -111,6 +121,8 @@ Layout의 경우 다른 View를 포함하고 관리하며, 눈에 보이는 View
 |rowCount|그리드 레이아웃의 줄의 개수|
 |columnCount|그리드 레이아웃의 칸의 개수|
 
+<br>
+
 **GridLayout에 배치되는 View의 주요 속성**
 
 |속성|내용|
@@ -121,6 +133,8 @@ Layout의 경우 다른 View를 포함하고 관리하며, 눈에 보이는 View
 |layout_rowSpan|View가 차지할 줄의 수|
 |layout_columnWeight|남은 공간을 차지할 가로 비율|
 |layout_columnHeight|남은 공간을 차지할 세로 비율|
+
+<br>
 
 #### 2-5. RelativeLayout
 
@@ -144,6 +158,8 @@ Layout의 경우 다른 View를 포함하고 관리하며, 눈에 보이는 View
 
 ![android relative layout]({{site.url}}/img/Android/relativelayout.png){:height="300" width="600"} 
 
+<br>
+
 #### 2-6. ContraintLayout
 
 - RelativeLayout을 개선한 layout으로 RelativeLayout 보다 유연하게 화면을 구성할 수 있다.
@@ -157,6 +173,8 @@ Layout의 경우 다른 View를 포함하고 관리하며, 눈에 보이는 View
 
 **Relative layout과의 차이** <br>
 Relative layout과 같은 경우는 View를 가운데 설정할 때만 스프링 제약 조건을 사용할 수 있다. 하지만 Constraint layout의 경우 모든 경우에 있어 스프링 제약 조건을 사용할 수 있다. (Parent와의 관계를 설정할 때만 가능하고 다른 view와의 관계를 설정할 때는 contraint도 실선 제약 조건만 가능하다.)
+
+<br>
 
 #### 2-7. Space
 
@@ -183,13 +201,17 @@ Activity 객체가 생성되면 화면에 배치된 모든 view는 객체로 생
 위와 같은 코드를 통해 생성된 view의 주소값을 얻어올 수 있다. <br>
 여기서 코틀린으로 안드로이드를 개발하는 장점이 등장하는데, 코틀린은 view의 id와 같은 이름의 변수가 자동으로 생성되고 해당 변수는 객체의 주소를 갖는다.
 
+<br>
+
 #### 3-1. TextView
 
-- 사용자에게 전달하고자 하는 문자열을 표시하는 View(widget)
+- **사용자에게 전달하고자 하는 문자열을 표시하는 View(widget)**
+
+<br>
 
 #### 3-2. Button
 
-- 사용자가 클릭(터치)하면 개발자가 만든 코드를 동작시켜 주는 view
+- **사용자가 클릭(터치)하면 개발자가 만든 코드를 동작시켜 주는 view**
 - Button은 문자열을 표시하는 Button과 이미지를 표시하는 ImageButton이 있다.
 
 **Button의 이벤트**
@@ -225,9 +247,11 @@ Activity 객체가 생성되면 화면에 배치된 모든 view는 객체로 생
 
 하나의 리스너에서 여러 view를 분기해서 처리하고 싶을때는 일반적으로 **방법1**을 사용하고, 각각의 view를 따로 처리하고 싶을 때는 **방법2**를 사용한다.
 
+<br>
+
 #### 3-3. EditText
 
-- 사용자에게 문자열 데이터를 입력 받을 때 사용하는 view
+- **사용자에게 문자열 데이터를 입력 받을 때 사용하는 view**
 
 ![edit text list]({{site.url}}/img/Android/edittextlist.png){:height="300"} 
 
@@ -313,10 +337,14 @@ Plain Text부터 시작해 아래 밑줄 표시가 된 view가 모두 editText v
         }
     }
 ```
+EditAction 이벤트의 경우 리스너를 고차 함수로 구현할 수 있다. 하지만 TextWatcher의 경우 그렇지 않다. <br>
+두 이벤트의 차이는 이벤트 리스너가 오버라이딩 해야하는 메서드의 개수 차이다. 오버라이딩이 필요한 메서드가 1개보다 많으면 고차함수가 제공되지 않는다.
+
+<br>
 
 #### 3-4. TextInputLayout
 
-- EditText을 보완한 view
+- **EditText을 보완한 view**
 
 ![edit text list]({{site.url}}/img/Android/textinputlayout.png){:height="500"} 
 
@@ -346,9 +374,11 @@ Plain Text부터 시작해 아래 밑줄 표시가 된 view가 모두 editText v
 
 ![edit text list]({{site.url}}/img/Android/textinputlayout2.png){:height="300"} 
 
+<br>
+
 #### 3-5. ImageView
 
-- 이미지를 사용자에게 보여주고자 하는 목적으로 제공되는 view
+- **이미지를 사용자에게 보여주고자 하는 목적으로 제공되는 view**
 
 ![edit text list]({{site.url}}/img/Android/imageView.png){:height="500"} 
 
@@ -360,12 +390,30 @@ Plain Text부터 시작해 아래 밑줄 표시가 된 view가 모두 editText v
 - 안드로이드 버전이 변경되면서 mipmap이라는 폴더를 제공하는데, 이 폴더의 이미지는 비트맵이 아닌 벡터 방식으로 이미지를 그리게 된다.
 - mipmap 폴더의 이미지는 런처 아이콘용 이미지를 넣는 폴더로 사용한다.
 
+<br>
+
 #### 3-6. ToggleButton
 
-- 환경설정과 같은 화면에서 어플리케이션의 기능을 on/off 하는 기능을 제공하고자 할 때 사용
+- **환경설정과 같은 화면에서 어플리케이션의 기능을 on/off 하는 기능을 제공하고자 할 때 사용하는 view**
+
+<br>
 
 #### 3-7. CheckBox
 
-- 선택할 수 있는 항목 들을 제공하고 체크를 통해 선택할 수 있도록 하는 view
+- **선택할 수 있는 항목 들을 제공하고 체크를 통해 선택할 수 있도록 하는 view**
 - 각 checkBox는 독립되어 있기 때문에, 다수의 checkBox를 동시에 선택할 수 있다. 
 
+**CheckBox 이벤트**
+
+- **checkedChange:** 체크 상태가 변경되었을 때 발생하는 사건
+
+<br>
+
+#### 3-8. RadioButton
+
+- **하나의 그룹 안에서 하나만 선택할 수 있도록 하는 view**
+- RadioGroop 내부에서 사용할 수 있다.
+
+**RadioButton 이벤트**
+
+- **checkedChange:** 체크 상태가 변경되었을 때 발생하는 사건
