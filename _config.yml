@@ -19,8 +19,8 @@ markdown:          kramdown
 highlighter:       rouge
 excerpt_separator: <!--more-->
 permalink:         /articles/:year-:month/:title
-plugins : 
-  - jekyll-sitemap
+# plugins : 
+#   - jekyll-sitemap
 
 kramdown:
   auto_ids: true

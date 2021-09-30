@@ -64,7 +64,17 @@ layout: default
   </ul>
 </div><!-- end share-buttons -->
 
+
+<script src="https://utteranc.es/client.js"
+        repo="younhwan97/younhwan97.github.io"
+        issue-term="url"
+        label="Commnet"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script>
+
 {% if site.owner.disqus-shortname and page.comments == true %}
-<div id="disqus_thread"></div>
+<!-- <div id="disqus_thread"></div> -->
 {% include disqus.html %}
 {% endif %}
