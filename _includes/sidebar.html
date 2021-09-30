@@ -23,10 +23,24 @@
     </ul>
   </nav>
   <br>
+  <!-- hits -->
   <a target="_blank" href="https://hits.seeyoufarm.com">
-    <img 
-        style="margin-right: 0;"
-        src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fyounhwan97.github.io&count_bg=%23555555&title_bg=%2379C83D&icon=android.svg&icon_color=%23E7E7E7&title=Total&edge_flat=false"/>
+    <script>
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        // mobile
+        document.write(`
+          <img 
+              src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fyounhwan97.github.io&count_bg=%23555555&title_bg=%2379C83D&icon=android.svg&icon_color=%23E7E7E7&title=Total&edge_flat=false"/>
+        `)
+      }else{
+        // desktop
+        document.write(`
+          <img 
+              style="margin-right: 0;"
+              src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fyounhwan97.github.io&count_bg=%23555555&title_bg=%2379C83D&icon=android.svg&icon_color=%23E7E7E7&title=Total&edge_flat=false"/>
+        `)
+      }
+    </script>
   </a>
   <!--  {% include social-links.html %}-->
 </div>
