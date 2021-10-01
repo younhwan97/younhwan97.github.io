@@ -11,8 +11,8 @@ comments: true
 ## <span style="color:#0f7b6c">1. 안드로이드란?</span>
 
 - 2008년 구글이 발표한 스마트폰 OS
-- 운영체제와 미들웨어, 주요 어플리케이션을 포함
-- 현재 Java와 Kotlin 둘 다 지원하고 있음
+- 운영체제와 미들웨어, 주요 어플리케이션을 포함 👉 **소프트웨어집합**
+- 현재 개발언어로 Java와 Kotlin 둘 다 지원하고 있음
 
 ### 1-1. 안드로이드 특징
 
@@ -45,7 +45,7 @@ comments: true
 **step 1: JDK 설치**
 
 - 안드로이드는 Java와 Kotlin 언어로 개발이 가능하다.
-- Java는 물론이고, Kotlin도 Java Virtual Machine(JVM)에서 동작하는 프로그래밍 언어이기 때문에 JDK가 필요하다.
+- Java는 물론이고, **Kotlin도 Java Virtual Machine(JVM)에서 동작하는 프로그래밍 언어**이기 때문에 JDK가 필요하다.
 - [https://www.oracle.com/java/technologies/downloads/](https://www.oracle.com/java/technologies/downloads/) <br>
     <span style="color:#808080"> ㄴ 자바 환경 변수 설정을 빼먹지 않도록 한다. </span>
 
@@ -76,7 +76,7 @@ comments: true
 ![create project step 6]({{site.url}}/img/Android/create-project-step-6.png){:height="300" width="600"} 
 - AVD: Android Virtual Device의 약자로서 안드로이드 에뮬레이터이다.
 
-## <span style="color:#0f7b6c">4. 안드로이드 어플리케이션의 동작원리</span>
+## <span style="color:#0f7b6c">4. 안드로이드 어플리케이션의 동작원리 👍</span>
 
 ### 4-1. 안드로이드 4대 구성 요소
 - **Activity**: 눈에 보이는 화면을 관리하는 실행 단위
@@ -84,7 +84,7 @@ comments: true
 - **Broadcast Receiver**: OS가 메시지를 받으면 실행되는 실행 단위
 - **Content Provider**: 저장된 데이터를 제공하기 위해 실행되는 실행 단위
 
-> 안드로이드 어플리케이션은 4대 구성 요소들을 통합 관리하는 번들 개념이다. <br><br>
+> <span style="color:#8d7edc">**안드로이드 어플리케이션**</span>은 4대 구성 요소들을 통합 관리하는 번들 개념이다.<br><br>
 각각의 구성요소가 모여 하나의 안드로이드 어플리케이션을 이룬다. 각 구성요소는 자신들이 실행될 적절한 상황이 왔을 때, 개발자가 작성한 코드를 실행한다.
 
 ![안드로이드 4대 구성요소]({{site.url}}/img/Android/android_4_components.png){:height="500" width="700"} 
@@ -99,7 +99,7 @@ comments: true
 ### 4-3. 동작원리
 
 **어플리케이션 설치**
-1. 제작된 어플리케잇녀은 apk라는 파일로 압축되어 마켓에 등록된다.
+1. 제작된 어플리케이션은 apk라는 파일로 압축되어 마켓에 등록된다.
 2. apk 파일을 단말기에 다운로드하게 되면 자동으로 설치가 이뤄진다.
 3. 안드로이드 OS는 설치가 완료되면 **AndroidManifest.xml** 파일의 내용을 분석하게 된다.
 4. 여기에서 안드로이드 4대 구성요소 중 어떤 것들이 있는지 파악하여 이를 정리하게 된다.
@@ -109,7 +109,7 @@ comments: true
 - 이 때 **AndroidManifest.xml**에 있는 여러 구성 요소 중 activity를 찾는다.
 - 이 activity 중에 다음과 같이 작성되어 있는 것을 첫 화면을 관리하는 요소로 판단하고 이를 실행시켜 준다.
 
-```
+```kotlin
     <activity
         android:name=".MainActivity"
         android:exported="true">
@@ -125,7 +125,7 @@ comments: true
 - 이 때 setContentView 메서드에 관리할 화면을 지정하는데 res 폴더의 layout에 있는 xml 파일을 지정하게 된다.
 - 이를 통해 화면을 구성하고 단말기 화면에 나타나게 된다.
 
-```
+```kotlin
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
