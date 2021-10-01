@@ -153,3 +153,176 @@ custom list view도 일반적인 list view를 사용할때와 마찬가지로 Ar
 **step 4: 결과 확인**
 
 ![create layout step 1]({{site.url}}/img/Android/create-layout-step-44.png){: height="400"}
+
+## <span style="color:#0f7b6c">2. Spinner</span>
+
+- **사용자에게 항목을 주고 선택 하게 할 수 있는 Adapter view**
+- 작은 스마트폰 화면을 효율적으로 사용할 수 있다는 장점을 가지고 있다.
+
+```
+    class MainActivity : AppCompatActivity() {
+        val items = arrayOf(
+            "스피너항목1","스피너항목2","스피너항목3","스피너항목4","스피너항목5"
+        )
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            // 어댑터를 생성
+
+            // 1. 접혔을 때의 모습을 구성할 layout
+            val adapter1 = ArrayAdapter(this, android.R.layout.simple_list_item_1, items)
+
+            // 2. 펼쳤을 때의 모습을 구성할 layout
+            adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+            spinner.adapter = adapter1
+        }
+    }
+```
+
+**Spinner 이벤트**
+
+- **ItemSelected:** 사용자가 항목을 선택했을 때 발생. 이 이벤트의 리스너는 프로퍼티로 설정.(다른 이벤트는 메서드로 했었는데 여기서 살짝 차이가 존재!)
+
+## <span style="color:#0f7b6c">3. GridView</span>
+
+- **ListView와 거의 동일하며 항목을 그리드 형태로 보여 줄 수 있는 view**
+- ListView를 구현하는 방식에서 속성 한 가지만 더 추가하면 된다.
+
+
+```
+    class MainActivity : AppCompatActivity() {
+        val items = arrayOf(
+            "그리드항목1","그리드항목2","그리드항목3","그리드항목4","그리드항목5",
+            "그리드항목6","그리드항목7","그리드항목8","그리드항목9","그리드항목10"
+        )
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            val adapter1 = ArrayAdapter(this, android.R.layout.simple_list_item_1, items)
+
+            grid.adapter = adapter1
+        }
+    }
+```
+
+**속성 값에 따른 GridView**
+
+![grid view 1]({{site.url}}/img/Android/gridView.png){: height="400"}
+
+numColumns라는 속성이 girdView의 핵심 속성이며, 속성값을 auto_fit로 하면 디바이스의 화면크기에 맞춰 자동으로 칸의 개수가 맞춰진다.
+
+**GridView 이벤트**
+
+- **ItemSelected:** 사용자가 항목을 선택했을 때 발생.
+
+## <span style="color:#0f7b6c">4. AutoCompleteTextView</span>
+
+- **EditText에 자동완성 기능을 추가한 view**
+- 사용자가 문자열을 입력하면 설정한 문자열 항목을 통해 자동완성 리스트를 제공
+
+```
+    class MainActivity : AppCompatActivity() {
+        val items = arrayOf(
+            "abcd", "abce", "abcf", "abcq", "abce", "abcc",
+            "bcde", "bcdr", "bcft", "bcfy"
+        )
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            val adapter1 = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, items)
+            // 다른 adapterView는 어댑터를 프로퍼티로 설정했다면 autoCompleteTextView는 setAdapter 메서드를 통해 설정한다.
+            autoCompleteTextView.setAdapter(adapter1)
+        }
+    }
+```
+
+**속성 값에 따른 autoCompleteTextView**
+
+![auto complete text vieew]({{site.url}}/img/Android/autoCompleteTextView.png){: height="400"}
+
+completionThreshold 값에 따라 몇 글자를 입력했을 때 자동완성 리스트가 나타날지 설정
+
+**autoCompleteTextView 이벤트**
+
+- **ItemClick:** 제공되는 자동완성 리스트의 항목을 클릭할 경우 발생
+
+### 4-1. MultiAutoCompleteTextView
+
+- **AutoCompleteTextView와 거의 동일하며, 구분자를 활용해 여러 문자열을 동시에 입력 받을 수 있는 view**
+- AutoCompleteTextView 생성 과정에서 구분자를 설정하는 단계만 추가하면 된다.
+
+```
+    class MainActivity : AppCompatActivity() {
+        val items = arrayOf(
+            "abcd", "abce", "abcf", "abcq", "abce", "abcc",
+            "bcde", "bcdr", "bcft", "bcfy"
+        )
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            val adapter1 = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, items)
+
+            // 구분자
+            multiAutoCompleteTextView.setTokenizer(MultiAutoCompleteTextView.CommaTokenizer())
+
+            // 다른 adapterView는 어댑터를 프로퍼티로 설정했다면 autoCompleteTextView는 setAdapter 메서드를 통해 설정한다.
+            multiAutoCompleteTextView.setAdapter(adapter1)
+        }
+    }
+```
+
+![MultiAutoCompleteTextView]({{site.url}}/img/Android/MultiAutoCompleteTextView.png){: height="400"}
+
+## <span style="color:#0f7b6c">5. SingleChoiceListView</span>
+
+- **다수의 항목을 제공하고 항목 중 하나를 선택할 수 있는 listView**
+- ListView의 Mode를 변경하여 설정
+
+```
+    class MainActivity : AppCompatActivity() {
+        val items = arrayOf(
+            "항목1", "항목2", "항목3", "항목4", "항목5", "항목6"
+        )
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            val adapter1 = ArrayAdapter(this, android.R.layout.simple_list_item_single_choice, items)
+            list1.adapter = adapter1
+            list1.choiceMode = ListView.CHOICE_MODE_SINGLE
+        }
+    }
+```
+
+![SingleChoice]({{site.url}}/img/Android/SingleChoice.png){: height="400"}
+
+### 5-1. MultiChoiceListView
+
+```
+    class MainActivity : AppCompatActivity() {
+        val items = arrayOf(
+            "항목1", "항목2", "항목3", "항목4", "항목5", "항목6"
+        )
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            val adapter1 = ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, items)
+            list1.adapter = adapter1
+            list1.choiceMode = ListView.CHOICE_MODE_MULTIPLE
+        }
+    }
+```
+
+![multiChoice]({{site.url}}/img/Android/multiChoice.png){: height="400"}
