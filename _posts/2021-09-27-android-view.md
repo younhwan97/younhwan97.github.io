@@ -40,7 +40,7 @@ Layout의 경우 다른 View를 포함하고 관리하며, 눈에 보이는 View
 어플리케이션 실행 과정: <br>
 [https://younhwan97.github.io/articles/2021-09/about-android](https://younhwan97.github.io/articles/2021-09/about-android)
 
-![android layout concept]({{site.url}}/img/Android/app-start.png){:height="400" width="800"} 
+![app start]({{site.url}}/img/Android/app-start.png){:height="400" width="800"} 
 
 ## <span style="color:#0f7b6c">2. Layout</span>
 
