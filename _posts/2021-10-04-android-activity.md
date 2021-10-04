@@ -57,7 +57,7 @@ activity 뿐만 아니라 다른 4대 구성들도 마찬가지로 intent라는 
 
 ### 1-1. BackStack
 
-- Activity에서 다른 Activity를 실행하면 이전 Activity는 Back Stack에 담겨 **정지 상태**가 되고 새로 실행된 Activity가 활동하게 된다.
+- Activity에서 다른 Activity를 실행하면 이전 Activity는 Back Stack에 담겨 **정지 상태(Stop)**가 되고 새로 실행된 Activity가 활동하게 된다.
 - 새로운 실행된 Activity가 **제거** 되면 Back Stack에 있던 Activity가 다시 활동하게 된다.
 
 ![back stack]({{site.url}}/img/Android/back-stack.png){:height="400" width="800"}
@@ -247,7 +247,9 @@ requestCode를 통해 분기할 수 있다.
         }
     }
 ```
+
 <br>
+
 ```kotlin
     class MainActivity3 : AppCompatActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -278,3 +280,271 @@ requestCode를 통해 분기할 수 있다.
 ![multipleActivityForResult]({{site.url}}/img/Android/resultcode.png){:height="500"}
 
 thrid activty에서 RESULT_OK, RESULT_CANCELED, RESULT_FIRST_USER, RESULT_FIRST_USER+1 각각의 버튼을 클릭하면 결과 값이 각각 RESULT_OK, RESULT_CANCELED, RESULT_FIRST_USER, RESULT_FIRST_USER+1로 셋팅된다. 해당 결과 값은 MainActivity의 onActivityResult에서 resultCode로 사용할 수 있다.
+
+## <span style="color:#0f7b6c">3. 데이터 전달</span>
+
+- **Activity를 생성하기 위해 사용되는 intent 객체에 데이터를 저장할 수 있다.**
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            button.setOnClickListener {
+                val second_intent = Intent(this, MainActivity2::class.java)
+
+                second_intent.putExtra("value1", 1)
+                second_intent.putExtra("value2", 11.11)
+                second_intent.putExtra("value3","str")
+                second_intent.putExtra("value4", true)
+
+                startActivity(second_intent)
+            }
+        }
+    }
+```
+
+<br>
+
+```kotlin
+    class MainActivity2 : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main2)
+
+            // 현재 activity를 실행하기 위해 사용한 intent로 부터 데이터를 가져올 수 있다.
+            val data1 = intent.getIntExtra("value1", 0)
+            val data2 = intent.getDoubleExtra("value2", 0.0)
+            val data3 = intent.getStringExtra("value3")
+            val data4 = intent.getBooleanExtra("value4", false)
+
+            textView2.text = "$data1\n"
+            textView2.append("$data2\n")
+            textView2.append("$data3\n")
+            textView2.append("$data4")
+        }
+    }
+```
+
+putExtra 메서드를 이용해 intent객체에 데이터를 저장할 수 있고, intent객체를 이용해 새로 생긴 activity에서는 intent객체의 getXXXExtra 메서드를 통해 데이터를 전달 받을 수 있다.
+
+![putExtra]({{site.url}}/img/Android/putExtra.png){:height="500"}
+
+### 3-1. 종료할 때 기존 activity로 데이터 가져오기
+
+- **Activity를 생성하는 쪽에서는 생성하는 activity의 결과로 데이터를 받아야 하므로 startActivityForResult를 사용한다.**
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        val SECOND_INTENT = 100
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            button.setOnClickListener {
+                val second_intent = Intent(this, MainActivity2::class.java)
+
+                second_intent.putExtra("value1", 1)
+                second_intent.putExtra("value2", 11.11)
+                second_intent.putExtra("value3","str")
+                second_intent.putExtra("value4", true)
+
+                startActivityForResult(second_intent,SECOND_INTENT )
+            }
+        }
+
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            super.onActivityResult(requestCode, resultCode, data)
+
+            when(requestCode){
+                SECOND_INTENT -> {
+                    val result1 = data?.getIntExtra("result1", 0)
+                    val result2= data?.getDoubleExtra("result2", 0.0)
+                    val result3 = data?.getStringExtra("result3")
+                    val result4 = data?.getBooleanExtra("result4", true)
+
+                    textView.text= "${result1}\n"
+                    textView.append("$result2\n")
+                    textView.append("$result3\n")
+                    textView.append("$result4\n")
+
+                }
+            }
+        }
+    }
+```
+
+<br>
+
+```kotlin
+    class MainActivity2 : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main2)
+
+            // 현재 activity를 실행하기 위해 사용한 intent로 부터 데이터를 가져올 수 있다.
+            val data1 = intent.getIntExtra("value1", 0)
+            val data2 = intent.getDoubleExtra("value2", 0.0)
+            val data3 = intent.getStringExtra("value3")
+            val data4 = intent.getBooleanExtra("value4", false)
+
+            textView2.text = "$data1\n"
+            textView2.append("$data2\n")
+            textView2.append("$data3\n")
+            textView2.append("$data4")
+
+            val result_intent = Intent()
+            result_intent.putExtra("result1", 100)
+            result_intent.putExtra("result2", 11.11)
+            result_intent.putExtra("result3","result")
+            result_intent.putExtra("result4",false)
+
+            setResult(RESULT_CANCELED, result_intent)
+        }
+    }
+```
+
+![putExtraResult]({{site.url}}/img/Android/putExtraResult.png){:height="500"}
+
+### 3-2. 객체 전달하기
+
+- **Intent를 통해 객체를 전달할 때는 객체 직렬화를 해야 하는데 안드로이드는 Parcelable 인터페이스를 사용한다.**
+- Parcelable 인터페이스는 전달 받은 쪽에서 객체를 복원할 때 필요한 정보를 가진 부분을 의미한다.
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        val SECOND_INTENT = 100
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            button.setOnClickListener {
+                val second_intent = Intent(this, MainActivity2::class.java)
+
+                val t1 = TestClass(100,11.11)
+                second_intent.putExtra("obj1",t1)
+
+                startActivityForResult(second_intent, SECOND_INTENT)
+            }
+        }
+
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            super.onActivityResult(requestCode, resultCode, data)
+
+            when(requestCode){
+                SECOND_INTENT -> {
+
+                }
+            }
+        }
+    }
+
+    class TestClass(val a1:Int, val a2:Double): Parcelable{
+        constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readDouble()) {
+        }
+
+        override fun writeToParcel(parcel: Parcel, flags: Int) {
+            parcel.writeInt(a1)
+            parcel.writeDouble(a2)
+        }
+
+        override fun describeContents(): Int {
+            return 0
+        }
+
+        companion object CREATOR : Parcelable.Creator<TestClass> {
+            override fun createFromParcel(parcel: Parcel): TestClass {
+                return TestClass(parcel)
+            }
+
+            override fun newArray(size: Int): Array<TestClass?> {
+                return arrayOfNulls(size)
+            }
+        }
+
+    }
+```
+
+<br>
+
+```kotlin   
+    class MainActivity2 : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main2)
+
+            val obj1 = intent.getParcelableExtra<TestClass>("obj1")
+            textView3.text= "${obj1?.a1}"
+            textView3.append("\n${obj1?.a2}")
+
+            button2.setOnClickListener {
+                finish()
+            }
+        }
+    }
+```
+
+![transmissionObj]({{site.url}}/img/Android/transmissionObj.png){:height="500"}
+
+## <span style="color:#0f7b6c">4. 다른 어플리케이션의 Activity 실행하기</span>
+
+- 안드로이드 4대 구성요소는 모두 AndroidManifest.xml 파일에 기록되어야 한다.
+- 이 때 다른 어플리케이션이 실행할 수 있도록 하고자 한다면, Intent filter를 이용해 이름을 설정해주면 된다.
+- 어플리케이션이 단말기에 설치되면 안드로이드 OS는 지정된 Intent filter의 이름을 확인하여 정리하고 실행 요청을 받으면 이를 실행할 수 있다.
+
+```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+        package="kr.co.younhwan.myapplication">
+
+        <application
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/Theme.MyApplication">
+            <activity android:name=".MainActivity2" android:exported="true">
+                <intent-filter>
+                    <action android:name="kr.co.younhwan.test_acitivity" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                </intent-filter>
+            </activity>>
+            <activity
+                android:name=".MainActivity"
+                android:exported="true">
+                <intent-filter>
+                    <action android:name="android.intent.action.MAIN" />
+
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter>
+            </activity>
+        </application>
+
+    </manifest>
+```
+
+MainActivity2라는 이름의 activity를 다른 어플리케이션에서 실행할 수 있도록 설정하기 위해서 AndroidManifest.xml 파일 내부에 위와 같은 설정을 추가했다.
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            button.setOnClickListener {
+                val other_intent = Intent("kr.co.younhwan.test_activity")
+                startActivity(other_intent)
+            }
+        }
+    }
+```
+
+다른 어플리케이션에서 intent filter에 등록된 이름을 이용해 실행했다.
+
+![create other activity]({{site.url}}/img/Android/create-other-activity.png){:height="500"}
+
+My Application2에서 My Application이 실행된 것을 볼 수 있다.
