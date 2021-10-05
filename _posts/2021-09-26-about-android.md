@@ -79,13 +79,13 @@ comments: true
 ## <span style="color:#0f7b6c">4. 안드로이드 어플리케이션의 동작원리 👍</span>
 
 ### 4-1. 안드로이드 4대 구성 요소
-- **Activity**: 눈에 보이는 화면을 관리하는 실행 단위
+- **[Activity]({{site.url}}/articles/2021-10/android-activity)**: 눈에 보이는 화면을 관리하는 실행 단위
 - **Service**: 화면을 가지지 않는 실행 단위 (= 백그라운드 프로세싱)
-- **Broadcast Receiver**: OS가 메시지를 받으면 실행되는 실행 단위
+- **[Broadcast Receiver]({{site.url}}/articles/2021-10/android-board-cast-receover)**: OS가 메시지를 받으면 실행되는 실행 단위
 - **Content Provider**: 저장된 데이터를 제공하기 위해 실행되는 실행 단위
 
 > <span style="color:#8d7edc">**안드로이드 어플리케이션**</span>은 4대 구성 요소들을 통합 관리하는 번들 개념이다.<br><br>
-각각의 구성요소가 모여 하나의 안드로이드 어플리케이션을 이룬다. 각 구성요소는 자신들이 실행될 적절한 상황이 왔을 때, 개발자가 작성한와 함께 실행된다.
+각각의 구성요소가 모여 하나의 안드로이드 어플리케이션을 이룬다. 각 구성요소는 자신들이 실행될 적절한 상황이 왔을 때, 개발자가 작성한 코드와 함께 실행된다.
 
 ![안드로이드 4대 구성요소]({{site.url}}/img/Android/android_4_components.png){:height="500" width="700"} 
 
