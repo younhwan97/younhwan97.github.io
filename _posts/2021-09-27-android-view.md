@@ -6,14 +6,12 @@ categories: [Android]
 comments: true
 ---
 
-![android]({{site.url}}/img/Android/giphy.gif)
-
 - 안드로이드에서 눈에 보이는 모든 요소를 View라고 부른다.
 - 개발자가 배치하는 모든 View 들은 Class로 제공되는데 모두 View라는 클래스를 상속받고 있다.
 - View 클래스는 모든 UI 요소들의 부모 클래스로써 **Layout**과 **Widget**으로 나뉜다.
 
 > 안드로이드 4대 구성요소 중 눈에 보이는 화면을 관리하는 실행단위는 **Activity**다. <br><br>
-즉, **Activity**가 눈에보이는 화면을 나타내기 위해서 View를 사용하는 것 이다.
+즉, **Activity**가 눈에보이는 화면을 나타내기 위해서 View를 사용하는 것이다.
 
 ## <span style="color:#0f7b6c">1. Layout과 Widget</span>
 
@@ -45,7 +43,7 @@ Layout의 경우 다른 View를 포함하고 관리하며, 눈에 보이는 View
 ## <span style="color:#0f7b6c">2. Layout</span>
 
 - 안드로이드는 화면을 구성할 때 배치되는 View들이 어디에 배치된다는 좌표를 설정하지 않는다.
-- 다른 단말기에서도 자연스럽게 보이기 위해 자표가 아닌 배치되는 모양을 결정한다.
+- 다른 단말기에서도 자연스럽게 보이기 위해 좌표가 아닌 배치되는 모양을 결정한다.
 - 개발자가 배치되는 모양을 결정하고 View들을 배치하면 안드로이드 OS가 단말기에 적합한 좌표를 계산하고 배치한다.
 
 
@@ -91,7 +89,7 @@ Layout의 경우 다른 View를 포함하고 관리하며, 눈에 보이는 View
 |속성|내용|
 |---|---|
 |stretchColumns|TableRow 안의 View들이 가로로 늘어날 비율을 조정한다.|
-|shrinkColumns|TableRow 안의 View들이 화면에 보일 수 있도록 줄어들게 한다.|
+|shrinkColumns|TableRow 안의 View들이 전부 다 화면에 보일 수 있도록 줄어들게 한다.|
 
 <br>
 

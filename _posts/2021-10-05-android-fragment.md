@@ -187,9 +187,42 @@ Fragment는 onCreateView에서 Fragment에 사용할 view를 생성하기 때문
 
 ![test broad version]({{site.url}}/img/Android/fragment-lifecycle-step-5.png){:height="500"} 
 
-addToBackStack 메서드를 호출하지 않았을 경우 step 4에서 detach가 발생한다.
+addToBackStack 메서드를 호출하지 않았을 경우 step 4에서 detach가 발생한다. <br><br>
+여러 생명 주기 중에서 특히 눈여겨 봐야할 메서드는 **onViewCreated**다. **onViewCreated**는 Fragment에서 view 객체를 제어하는 방법과 관련있다. <br>
+Activity 내의 view를 제어할때는 onCreate 메서드 내부에서 view를 제어했다. 그 이유는 onCreate 메서드가 호출될 때 activity 내 view 객체들이 생성되어 있기 때문에 사용성을 보장받을 수 있다.<br>
+Fragment 역시 Fragment 내부의 view를 제어하기 위해서는 모든 view가 생성된 이후에 해야한다. 때문에 Fragment는 view를 생성하기위해 호출되는 onCreateView가 아닌 **onViewCreated** 메서드에서 view를 제어한다.
 
-## <span style="color:#0f7b6c">3. Fragment 내의 view 제어</span>
+## <span style="color:#0f7b6c">3. 여러 Fragment</span>
 
-Activity 내의 view를 제어할때는 onCreate 메서드 내부에서 view를 제어했다. 그 이유는 onCreate 메서드가 호출될 때 activity 내 view 객체들이 생성되어 있기 때문에 사용성을 보장받을 수 있다. <br>
-Fragment 역시 Fragment 내부의 view를 제어하기 위해서는 모든 view가 생성된 이후에 해야한다. 때문에 Fragment는 view를 생성하기위해 호출되는 onCreateView가 아닌 onViewCreated 메서드에서 view를 제어한다.
+- Fragment 사용을 보다 편하게 하도록 돕기 위해서 여러 기능이 구현된 Fragment
+
+### 3-1. ListFragment
+
+- Fragment 내에 ListView를 사용할 경우 보다 편리하게 구성할 수 있도록 제공되는 Fragment
+- ListView의 id가 @android:id/list로 설정되어 있을 경우 자동으로 ListView를 찾아 관리하게 된다.
+
+```kotlin
+    class subFragment:ListFragment() {
+        val item = arrayOf("항목1", "항목2", "항목3", "항목4")
+
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+            val view =inflater.inflate(R.layout.fragment_sub, null)
+            listAdapter = ArrayAdapter<String>(activity as MainActivity, android.R.layout.simple_list_item_1, item)
+            return view
+        }
+
+        // 리스트뷰의 항목을 터치했을 때 호출도히는 메서드
+        override fun onListItemClick(l: ListView, v: View, position: Int, id: Long) {
+            super.onListItemClick(l, v, position, id)
+        }
+    }
+```
+
+### 3-2. DialogFragment
+
+- AlertDiaglog를 Fragment로 만들어 사용할 수 있도록 제공되는 Fragment
+- AlertDialog와 큰 차이는 없다.
+- DialogFragment도 Fragment 이므로 Fragment의 생명주기나 기타 다양한 기능들을 그대로 사용할 수 있다.
+
+
+
