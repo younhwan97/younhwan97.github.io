@@ -49,7 +49,7 @@ Layout의 경우 다른 View를 포함하고 관리하며, 눈에 보이는 View
 
 ### 2-1. LinearLayout
 
-- 선형 방항성을 가지고 View를 배치하는 Layout
+- 선형(수직, 수평) 방항성을 가지고 View를 배치하는 Layout
 - 수직, 수평 방향으로 배치할 수 있으며 한 칸에 하나의 View만 배치할 수 있다.
 - 안드로이드에서 가장 많이 사용하는 Layout으로 여러 LinearLayout을 조합하여 다양한 모양을 만들 수 있다.
 
@@ -163,7 +163,7 @@ Layout의 경우 다른 View를 포함하고 관리하며, 눈에 보이는 View
 - 스프링 제약 조건: 지정된 기준으로부터 얼마큼 떨어진 위치에 있는지 비율을 설정한다.
 
 **Relative layout과의 차이** <br>
-Relative layout과 같은 경우는 View를 가운데 설정할 때만 스프링 제약 조건을 사용할 수 있다. 하지만 Constraint layout의 경우 모든 경우에 있어 스프링 제약 조건을 사용할 수 있다. (Parent와의 관계를 설정할 때만 가능하고 다른 view와의 관계를 설정할 때는 contraint도 실선 제약 조건만 가능하다.)
+Relative layout과 같은 경우는 View를 가운데 설정할 때만 스프링 제약 조건을 사용할 수 있다. 하지만 Constraint layout의 경우 모든 경우에 있어 스프링 제약 조건을 사용할 수 있다.  (Parent와의 관계를 설정할 때만 가능하고 다른 view와의 관계를 설정할 때는 contraint도 실선 제약 조건만 가능하다.)
 
 ### 2-7. Space
 
