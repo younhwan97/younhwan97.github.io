@@ -173,7 +173,7 @@ Relative layout과 같은 경우는 View를 가운데 설정할 때만 스프링
 ## <span style="color:#0f7b6c">3. Widget</span>
 
 - **안드로이드의 view 중 기능을 갖고 사용자와 상호작용을 하는 것들을 widget이라고 부른다.**
-- Widget은 layout 위에 배최되어 화면에 나타나고 코드를 통해 widget을 통제하여 사용자와 소통하는 수단이 된다.
+- Widget은 layout 위에 배치되어 화면에 나타나고 코드를 통해 widget을 통제하여 사용자와 소통하는 수단이 된다.
 
 **Widget 사용 패턴**
 1. Layout에 사용하고자 하는 widget을 배치한다.
@@ -188,11 +188,11 @@ Activity 객체가 생성되면 화면에 배치된 모든 view는 객체로 생
     val textView1 = findViewById<TextView>(R.id.textView1)
 ```
 위와 같은 코드를 통해 생성된 view의 주소값을 얻어올 수 있다. <br>
-여기서 코틀린으로 안드로이드를 개발하는 장점이 등장하는데, 코틀린은 view의 id와 같은 이름의 변수가 자동으로 생성되고 해당 변수는 객체의 주소를 갖는다.
+여기서 코틀린으로 안드로이드를 개발하는 장점이 등장하는데, 코틀린은 view의 id와 같은 이름의 변수가 자동으로 생성되고 해당 변수는 객체의 주소를 갖는다.(=reference) 👍
 
 ### 3-1. TextView와 ImageView
 
-- **사용자에게 전달하고자 하는 문자열과 이미지를 표시하는 view**
+- **사용자에게 전달하고자 하는 문자열과 이미지를 표시하는 view(widget)**
 
 **안드로이드 프로젝트 이미지 저장 방식**
 
@@ -202,7 +202,7 @@ Activity 객체가 생성되면 화면에 배치된 모든 view는 객체로 생
 
 **Drawable vs Mipmap**
 
-- 안드로이드에서 이미지르 넣은 폴더는 drawable 폴더이다.
+- 안드로이드에서 이미지를 넣는 폴더는 drawable 폴더이다.
 - 안드로이드 버전이 변경되면서 mipmap이라는 폴더를 제공하는데, 이 폴더의 이미지는 비트맵이 아닌 벡터 방식으로 이미지를 그리게 된다.
 - mipmap 폴더의 이미지는 런처 아이콘용 이미지를 넣는 폴더로 사용한다.
 
@@ -250,7 +250,7 @@ Activity 객체가 생성되면 화면에 배치된 모든 view는 객체로 생
 
 ![edit text list]({{site.url}}/img/Android/edittextlist.png){:height="300"} 
 
-Plain Text부터 시작해 아래 밑줄 표시가 된 view가 모두 editText view이다. 모두 똑같은 editText이지만 목적에 따라 각각의 view가 설정값이 조금씩 다르다.
+Plain Text부터 시작해 아래 밑줄 표시가 된 view가 모두 EditText view이다. 모두 똑같은 EditText이지만 목적에 따라 각각의 view가 설정값이 조금씩 다르다.
 
 **EditText 주요 속성**
 
