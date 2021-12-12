@@ -6,17 +6,15 @@ categories: [Android]
 comments: true
 ---
 
-![android]({{site.url}}/img/Android/giphy.gif)
-
-- 개발자는 화면의 다양한 view들을 배치해 화면을 구성한다.
-- 대부분의 view들은 배치를 하면 기본적으로 정해진 속성에 따라 모양이 구성된다.
+- 개발자는 다양한 view들을 배치해 화면을 구성한다.
+- 대부분의 view들은 배치를 하면 기본적으로 정해진 속성에 따라 모양이 구성된다.(편리하지만 제한이 많다.)
 - 하지만 일부 view들은 스스로 결정할 수 없는 부분이 있어 개발자가 반드시 데이터를 설정해야만 구성이 가능하다.
 - 이렇게 개발자가 반드시 설정해야 화면을 구성할 수 있는 view들을 가르켜 **Adapter View**라고 부른다.
 
 **Adapter Class**
 
 - Adapter View를 **개발자가 직접 설정**하기 위해서 사용하는 Class
-- 일반적으로 Adapter Class를 통해 **몇개의 항목**을 보여주고 **어떠한 형태와 데이터를** 보여줄 것인지 결정한다.
+- 일반적으로 Adapter Class를 통해 **몇개의 항목**을 보여주고 **어떠한 형태(모양)와 데이터를** 보여줄 것인지 결정한다.
 
 ## <span style="color:#0f7b6c">1. ListView</span>
 
@@ -29,7 +27,7 @@ comments: true
 
 **ArrayAdapter**
 
-- **ListView를 구성하기 위해 사용하는 Adapter**
+- **ListView를 구성하기 위해 사용하는 Adapter Class**
 
 ```kotlin
     class MainActivity : AppCompatActivity() {
@@ -52,6 +50,8 @@ comments: true
         }
     }
 ```
+
+Adapter class인 ArrayAdapter를 보면 AdapterView를 구성하기 위해서 레이아웃파일과 데이터를 인자로 받는다. 앞서 언급했듯 레이아웃파일을 통해 '어떠한 형태'로 view가 보여질지 결정하고, 데이터를 통해 '어떠한 데이터', '몇개의 항목'을 보여질지 결정하는 것이다.
 
 **simple_list_item_1.xml**
 
@@ -91,7 +91,7 @@ comments: true
         }
     }
 ```
-custom list view도 일반적인 list view를 사용할때와 마찬가지로 ArrayAdapter를 사용하는데, 각 list에 표시할 문자열이 1개인 경우 일반 list와 custom list 상관 없이 ArrayAdapter를 사용하면 된다.
+custom list view도 일반적인 list view를 사용할때와 마찬가지로 ArrayAdapter class를 사용하는데, 각 list에 표시할 문자열이 1개인 경우 일반 list와 custom list 상관 없이 ArrayAdapter를 사용하면 된다.
 
 **step 4: 결과 확인**
 
@@ -282,7 +282,7 @@ numColumns라는 속성이 girdView의 핵심 속성이며, 속성값을 auto_fi
 
 **GridView 이벤트**
 
-- **ItemSelected:** 사용자가 항목을 선택했을 때 발생.
+- **ItemClick:** 사용자가 항목을 선택했을 때 발생.
 
 ## <span style="color:#0f7b6c">4. AutoCompleteTextView</span>
 
