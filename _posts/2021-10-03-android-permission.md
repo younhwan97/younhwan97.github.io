@@ -6,8 +6,6 @@ categories: [Android]
 comments: true
 ---
 
-![android]({{site.url}}/img/Android/giphy.gif)
-
 - 안드로이드는 개인 정보, 센서, 카메라, 저장소 등의 개인 정보와 관련된 기능을 사용하기 위해 권한이 필요하다.
 - 권한 등록은 사용자가 어플레케이션을 다운받거나 설치 후 어플리케이션 정보에서 확인 가능하다.
 - 권한 등록의 목적은 사용자에게 어플리케이션이 어떠한 기능을 사용하는지 알려주눈 목적에서 사용한다.
@@ -52,7 +50,7 @@ comments: true
 ![enroll permission]({{site.url}}/img/Android/enroll-permission.png){:height="400"}
 
 AndroidManifest.xml이라는 구성파일에 어플리케이션에서 사용하고자 하는 권한을 등록했고, 위 사진과 같이 잘 등록된 것을 볼 수 있다. <br>
-하지만 권한이 잘 등록되었다고 모두 사용할 수 있는것은 아니다. 앞서 언급했듯 개인정보에 관한 권한은 사용자에게 승인을 받아야 정상적으로 사용할 수 있다. 
+하지만 권한이 등록되었다고 모두 사용할 수 있는것은 아니다. 앞서 언급했듯 개인정보에 관한 권한은 사용자에게 승인을 받아야 정상적으로 사용할 수 있다. 
 
 ![approval permission]({{site.url}}/img/Android/approval-permission.png){:height="400"}
 
