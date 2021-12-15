@@ -6,8 +6,6 @@ categories: [Android]
 comments: true
 ---
 
-![android]({{site.url}}/img/Android/giphy.gif)
-
 ![app start]({{site.url}}/img/Android/app-start.png){:height="400" width="800"} 
 
 위 과정을 통해 첫 화면을 관리하는 Activity가 생성 되었다. 일명 MainActiviy라고 불리는 그 activity는 자신에게 부여된 임무인 **'main_activity 화면 관리'**라는 임무를 완수하기 위해 계속 힘을 쓸 것이다. 그렇다면 사용자에게 다른 화면을 보여주려면 어떻게 해야 할까? <br>
@@ -21,7 +19,7 @@ comments: true
 
 - **안드로이드 4대 구성 요소들을 실행하기 위해서는 Intent라는 객체가 필요하다.**
 - Intent는 실행하고자 하는 4대 구성 요소와 관련된 정보를 가지고 있다.
-- 개발자는 실행하고자 하는 4대 구성 요소의 정보를 Intent에 담고 이를 안드로이드 OS에게 전달하면 안드로이드 OS에 의해 해당 구성 요소가 실행된다.
+- 개발자는 실행하고자 하는 4대 구성 요소의 정보를 Intent에 담고 이를 **안드로이드 OS에게 전달**하면 안드로이드 OS에 의해 해당 구성 요소가 실행된다.
 
 activity 뿐만 아니라 다른 4대 구성들도 마찬가지로 intent라는 객체를 통해 생성된다고 한다. 하지만 여기서는 activity만을 위주로 살펴보자.
 
