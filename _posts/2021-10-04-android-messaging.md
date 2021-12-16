@@ -343,7 +343,7 @@ DataPickerDialog 메서드의 2번째 인자는 Dialog의 ok 버튼을 눌렀을
 
 - 안드로이드 8.0 부터 새롭게 추가된 기능
 - 이전에는 사용자 설정에서 알림 메시지를 비활성화 하면 모든 메시지가 비황성화 됐다.
-- 8.0 부터는 Notification channel을 이용해 알림 메시지 채널이라는 그룹으로 묶어 관리할 수 있으며, 사용자는 채널 별로 메시지 활성화 여부를 설정할 수 있다. 
+- 8.0 부터는 Notification channel을 이용해 알림 메시지 채널이라는 그룹(광고 알림, 중요 알림 .. )으로 묶어 관리할 수 있으며, 사용자는 채널 별로 메시지 활성화 여부를 설정할 수 있다. 
 
 ```kotlin
     class MainActivity : AppCompatActivity() {
