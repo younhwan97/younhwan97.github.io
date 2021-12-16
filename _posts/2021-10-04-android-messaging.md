@@ -6,13 +6,11 @@ categories: [Android]
 comments: true
 ---
 
-![android]({{site.url}}/img/Android/giphy.gif)
-
 ## <span style="color:#0f7b6c">1. Toast</span>
 
 - **일정 시간이 지나면 자동으로 사라지는 메시지로 간단한 메시지를 사용자에게 전달하는 용도로 주로 사용한다.**
-- 화면과 관련 없이 안드로이드 OS에게 메시지 출력을 요청하고 안드로이드 OS에 의해 나타나는 메시지
-- 단말기내의 모든 어플리케이션, 모든 구성요소가 요청할 수 있으며 어플리케이션에 관계없이 요청된 순서대로 메시지가 나타난다.
+- **현재 화면과 관련 없이** 안드로이드 OS에게 메시지 출력을 요청하고 안드로이드 OS에 의해 나타나는 메시지
+- 단말기내의 모든 어플리케이션, 모든 구성요소가 요청할 수 있으며 현재 실행 중인 어플리케이션에 관계없이 요청된 순서대로 메시지가 나타난다.
 
 ```kotlin
     class MainActivity : AppCompatActivity() {
@@ -21,9 +19,14 @@ comments: true
             setContentView(R.layout.activity_main)
 
             button.setOnClickListener {
-                // toast 객체를 생성
+                // Toast 객체를 생성
                 val t1 = Toast.makeText(this, "기본 toast 입니다.", Toast.LENGTH_SHORT)
                 t1.show()
+
+                // Toast 클래스 속성 및 메서드
+                // setGravity : toast 메시지가 표시 될 위치를 변경
+                // view : toast 메시지를 통해 보여줄 view를 설정. 이를 통해 커스터마이징이 가능하다. (현재는 snackbar를 사용하는 것이 권장된다.)
+                // Duration : toast 메시지가 표시 될 시간을 설정한다. 
             }
         }
     }
@@ -297,4 +300,107 @@ DataPickerDialog 메서드의 2번째 인자는 Dialog의 ok 버튼을 눌렀을
             }
         }
     }
+```
+### 2-4. List Dialog
+
+- Dialog에 ListView를 표시할 수 있는 다이얼로그
+- Dialog는 Button을 총 3개까지 배치할 수 있는데 그 이상 필요한 경우 ListDialog를 사용하면 된다.
+
+```kolitn
+    class MainActivity : AppCompatActivity() {
+        val data = arrayOf("항목1","항목2","항목3","항목4","항목5","항목6","항목7","항목8","항목9")
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            button.setOnClickListener {
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("list dialog")
+                builder.setNegativeButton("button", null)
+
+                builder.setItems(data, null)
+                builder.show()
+            }
+        }
+    }
+```
+
+![create other activity]({{site.url}}/img/Android/create-list-dialog.png){:height="400"}
+
+## <span style="color:#0f7b6c">3. Notification</span>
+
+- Notification은 어플리케이션과 별도로 관리되는 메시지이다.
+- Notification 메시지를 OS에게 요청하면 OS는 알림 창 영역에 알림 메시지를 표시힌다.
+- 화면을 가지지 않는 실행단위에서 메시지를 표시할 때 주로 사용한다.  
+
+**Notification의 특징**
+
+- 사용자가 메시지를 확인하거나 제거하기 전까지 메시지를 유지한다.
+- 메시지를 터치하면 지정된 Activity가 실행되어 어플리케이션 실행을 유도할 수 있다.
+
+**Notification channel**
+
+- 안드로이드 8.0 부터 새롭게 추가된 기능
+- 이전에는 사용자 설정에서 알림 메시지를 비활성화 하면 모든 메시지가 비황성화 됐다.
+- 8.0 부터는 Notification channel을 이용해 알림 메시지 채널이라는 그룹으로 묶어 관리할 수 있으며, 사용자는 채널 별로 메시지 활성화 여부를 설정할 수 있다. 
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            button.setOnClickListener {
+                val builder1 = getNotificationBuilder("channel", "첫 번째 채널")
+
+                // 작은 아이콘(메시지 수신시 상단에 보여줄 작은 아이콘)
+                builder1.setSmallIcon(android.R.drawable.ic_menu_search)
+                // 큰 아이콘(메시지 본문에 표시할 메시지. Bitmap 객체)
+                val bitmap = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
+                builder1.setLargeIcon(bitmap)
+                // 숫자 설정
+                builder1.setNumber(100)
+                // 타이틀 설정
+                builder1.setContentTitle("content title")
+                // 메시지 설정
+                builder1.setContentText("content text")
+
+                // 메시지 객체 생성
+                val notification = builder1.build()
+                // 알림 메시지를 관리하는 객체를 추출
+                val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                // 알림 메시지를 출력
+                manager.notify(10, notification)
+            }
+        }
+
+        // 안드로이드 8.0 이상과 미만 버전에 대응하기 위해 채널을 설정하는 메서드
+        fun getNotificationBuilder(id:String, name:String) : NotificationCompat.Builder {
+
+            // os 버전별로 분기
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){ // 안드로이드 8.0 이상이라면
+                // 알림 메시지를 관리하는(=메시지를 관리하고 보여주는 등의 일을 하는) 객체를 추출
+                val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                // 채널 객체를 생성한다.
+                val channel = NotificationChannel(id, name, NotificationManager.IMPORTANCE_HIGH)
+                // 메시지 출력시 단말기 LED 르 사용할 것인가.
+                channel.enableLights(true)
+                // LED 색상
+                channel.lightColor = Color.RED
+                // 진동 사용 여부
+                channel.enableVibration(true)
+
+                // 알림 메시지를 관리하는 객체에 채널을 등록한다.
+                manager.createNotificationChannel(channel)
+
+                val builder= NotificationCompat.Builder(this, id)
+                return builder
+            } else{
+                val builder = NotificationCompat.Builder(this)
+                return builder
+            }
+        }
+    }
+
 ```
