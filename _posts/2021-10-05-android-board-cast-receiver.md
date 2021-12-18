@@ -6,8 +6,6 @@ categories: [Android]
 comments: true
 ---
 
-![android]({{site.url}}/img/Android/giphy.gif)
-
 - **Broad Cast Receiver는 안드로이드 OS에서 특정 상황에 발생하는 메시지를 받아 들여 동작하는 실행단위이다.**
 - Broad Cast Receiver는 반드시 외부에서 접근을 하기위한 이름을 가져야 한다.
 - 안드로이드 OS에서 어떤 사건이 발생하면 사건과 관련된 이름으로 지정된 Broad Cast Receiver를 찾아 동작 시킨다.
