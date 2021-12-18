@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "[Android] 안드로이드 Thread"
-excerpt: "안드로이드 Thread에 관해 알아본다."
+title: "[Android] 안드로이드 Thread와 Service"
+excerpt: "안드로이드 Thread와 Service에 관해 알아본다."
 categories: [Android]
 comments: true
 ---
@@ -213,3 +213,66 @@ Activity가 종료되어도 Thread는 계속 동작하기 때문에 onDestroy에
         }
     }
 ```
+
+## <span style="color:#0f7b6c">4. Service</span>
+
+- 화면을 가지고 있지 않는 실행 단위. (ex 음악 재생)
+- 안드로이드 4대 구성 요소중에 하나로 백그라운드 처리를 위해 사용되다.
+- Activity는 화면을 가지고 있어 화면이 보이는 동안 동작하지만 Service는 화면을 가지고 있지 않아 **보이지 않는 동안에도** 동작하는 것을 의미한다.
+
+### 4-1. 서비스 구성 방법
+
+**step 1: 서비스 클래스 생성**
+
+![create service step 1]({{site.url}}/img/Android/create-service-step-1.png){:height="400"} 
+
+**step 2: 서비스 가동/중지 시 동작할 메서드 오버라이딩**
+
+```kotlin
+    class MyService : Service() {
+
+        override fun onBind(intent: Intent): IBinder {
+            TODO("Return the communication channel to the service.")
+        }
+
+        // 서비스가 가동될 때 호출되는 메서드
+        override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+
+            Log.d("service", "service 가동")
+
+            return super.onStartCommand(intent, flags, startId)
+        }
+
+        // 서비스가 중지(=소멸)될 때 호출되는 메서드
+        override fun onDestroy() {
+            super.onDestroy()
+            Log.d("service", "service 중지(=소멸)")
+        }
+    }
+```
+
+**step 3: 서비스 가동/중지 시킬 환경 구성**
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            val serviceIntent = Intent(this, MyService::class.java)
+
+            button.setOnClickListener {
+                startService(serviceIntent)
+            }
+
+            button2.setOnClickListener {
+                stopService(serviceIntent)
+            }
+
+        }
+    }
+```
+
+### 4-2. 서비스와 Thread
+
+### 4-3. Foreground Service
