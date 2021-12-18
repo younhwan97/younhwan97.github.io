@@ -6,11 +6,9 @@ categories: [Android]
 comments: true
 ---
 
-![android]({{site.url}}/img/Android/giphy.gif)
-
 - **여러 화면을 가지고 있는 어플리케이션은 여러 activity를 가지고 있는 어플리케이션을 의미한다.**
 - Activity의 경우 독립된 실행단위로써 메모리 소비가 크다. 
-- 독립된 실행단위가 아닌 화면만 필요한 경우 Activity보다 Fragment가 더 잘어울린다.
+- 독립된 실행단위가 아닌 화면만 필요한 경우 Activity보다 Fragment가 더 적절하다.
 - Fragment는 activity내 작은 화면 조각으로 activity의 화면을 여러 영역으로 나누어 관리하는 목적으로 사용한다.
 
 **step 1: Fragment 생성**
