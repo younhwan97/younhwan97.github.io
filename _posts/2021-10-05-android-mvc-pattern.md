@@ -6,8 +6,6 @@ categories: [Android]
 comments: true
 ---
 
-![android]({{site.url}}/img/Android/giphy.gif)
-
 - 안드로이드에서는 Fragment를 활용해 MVC 패턴을 구성할 수 있다.
 - 눈에 보이는 모든 부분을 Fragment로 만들어 사용할 경우 Fragment를 관리하는 Activity가 Controller의 역할을 한다.
 - 즉 Fragment는 MVC의 View를 담당하고, Activity는 Controller를 담당하게 된다.
