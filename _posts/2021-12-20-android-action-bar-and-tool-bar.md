@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[Android] 안드로이드 ActionBar"
+title: "[Android] 안드로이드 ActionBar와 Toolbar"
 excerpt: "안드로이드 ActionBar에 관해 알아본다."
 categories: [Android]
 comments: true
@@ -218,3 +218,156 @@ item의 코드를 변경함으로서 가능하다.
 ```
 
 ![android-action-bar]({{site.url}}/img/Android/create-custom-action-bar-step-3.png){:height="400"}
+
+## <span style="color:#0f7b6c">5. Toolbar</span>
+
+- 안도르이드에서 ActionBar를 보다 자유롭게 사용할 수 있도록 Toolbar라는 view를 제공한다.
+- Toolbar를 이용해 탭 등 다양한 기능을 이용할 수 있도록 제공하고 있으며 기본적인 부분은 ActionBar와 동일하다.
+
+**step 1: Layout에 Toolbar를 배치**
+
+```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity" >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" />
+    </LinearLayout>
+```
+
+![android-action-bar]({{site.url}}/img/Android/create-tool-bar-step-1.png){:height="400"}
+
+**step 2: 기존 ActionBar 제거**
+
+![android-action-bar]({{site.url}}/img/Android/create-tool-bar-step-2.png){:height="400"}
+
+**step 3: Toolbar를 ActionBar 대신 사용할 수 있도록 만들기**
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            // toolbar를 actionBar 대신 사용하도록 설정
+            setSupportActionBar(toolbar)
+        }
+    }
+```
+
+이제 기존에 ActionBar를 사용했던 것 처럼 사용할 수 있다.
+
+### 5-1. Toolbar에서 ActionView 사용하기
+
+**MainActivity**
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            // toolbar를 actionBar 대신 사용하도록 설정
+            setSupportActionBar(toolbar)
+        }
+
+        override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+            menuInflater.inflate(R.menu.main_menu, menu)
+            
+            return true
+        }
+    }
+```
+
+**main_menu**
+
+```xml
+    <?xml version="1.0" encoding="utf-8"?>
+    <menu xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <item
+            android:id="@+id/item1"
+            android:icon="@android:drawable/ic_menu_search"
+            android:title="Item1"
+            app:showAsAction="always|collapseActionView"
+            app:actionViewClass="androidx.appcompat.widget.SearchView"
+            />
+    </menu>
+```
+
+### 5-2. Toolbar에서 Navigation 사용 하기
+
+- Toolbar도 ActionBar와 같은 방법으로 네비게이션 처리를 할 수 있다.
+- Toolbar로 부터 ActionBar를 추출하고 이 후에는 ActionBar와 동일하게 처리해준다.
+
+**MainActivity**
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            // toolbar를 actionBar 대신 사용하도록 설정
+            setSupportActionBar(toolbar)
+
+            button.setOnClickListener {
+                val second_intent = Intent(this, SecondActivity::class.java)
+                startActivity(second_intent)
+            }
+        }
+
+
+        override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+            menuInflater.inflate(R.menu.main_menu, menu)
+
+            return true
+        }
+    }
+```
+
+**SecondActivity**
+
+```kotlin
+    class SecondActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_second)
+
+            setSupportActionBar(toolbar3)
+
+            supportActionBar?.setHomeButtonEnabled(true)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        }
+
+        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+            when(item.itemId){
+                android.R.id.home ->{
+                    finish()
+                }
+            }
+
+            return super.onOptionsItemSelected(item)
+        }
+    }
+```
+
+## <span style="color:#0f7b6c">6. Toolbar를 활용한 다양한 View 구성</span>
+
+### 6-1. ViewPager2와 Toolbar
+
+- 기존 ViewPager의 경우 View를 전환하는 개념이었다.
+- ViewPager2의 경우 Fragment를 전환하는 개념이다.
+
