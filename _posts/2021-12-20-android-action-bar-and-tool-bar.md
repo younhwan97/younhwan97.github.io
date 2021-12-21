@@ -366,8 +366,302 @@ item의 코드를 변경함으로서 가능하다.
 
 ## <span style="color:#0f7b6c">6. Toolbar를 활용한 다양한 View 구성</span>
 
-### 6-1. ViewPager2와 Toolbar
+### 6-1. ViewPager2
 
 - 기존 ViewPager의 경우 View를 전환하는 개념이었다.
 - ViewPager2의 경우 Fragment를 전환하는 개념이다.
+
+**step 1: ViewPager2 라이브러리 추가 및 배치**
+
+![create-view-pager]({{site.url}}/img/Android/create-view-pager2-step-1.png){:height="400"}
+
+**step 2: ViewPager2를 만들기 위한 Adapter 준비**
+
+이때 ViewPager2의 Adapter인 FragmentStateAdapter는 인자로 FragmentActivity를 받는다.
+
+![create-view-pager]({{site.url}}/img/Android/create-view-pager2-step-2.png){:height="250" width="800"}
+
+따라서 기존 AppCompatActivity를 FragmentActivity로 변경한다. <br/> FragmentActivity는 기본적으로 ActionBar를 사용하지 않기 때문에 ToolBar 설정 또한 필요하다.
+
+```kotlin
+    class MainActivity : FragmentActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            // toolbar 설정. 기존 setSupportActionBar -> setActionBar
+            // setActionBar는 인자로 toolbar를 받는다. (appcompat toolbar가 아닌!!)
+            setActionBar(toolbar)
+
+            // ViewPager2 Adapter
+            val adapter = object : FragmentStateAdapter(this){
+                override fun getItemCount(): Int {
+                    TODO("Not yet implemented")
+                }
+
+                override fun createFragment(position: Int): Fragment {
+                    TODO("Not yet implemented")
+                }
+            }
+        }
+    }
+```
+
+**step 3: 사용 할 Fragment를 준비한다.**
+
+![create-view-pager]({{site.url}}/img/Android/create-view-pager2-step-3.png){:height="400" width="800"}
+
+위와 같은 Fragment를 총 3개 준비
+
+**stpe 4: 나머지 Adapter 설정을 완료한다.**
+
+```kotlin
+    class MainActivity : FragmentActivity() {
+        val frag1 = SubFragment1()
+        val frag2 = SubFragment2()
+        val frag3 = SubFragment3()
+
+        val fraglist = arrayOf(frag1, frag2, frag3)
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            // toolbar 설정. 기존 setSupportActionBar -> setActionBar
+            // setActionBar는 인자로 toolbar를 받는다. (appcompat toolbar가 아닌!!)
+            setActionBar(toolbar)
+
+            // ViewPager2 Adapter
+            val adapter = object : FragmentStateAdapter(this){
+                override fun getItemCount(): Int {
+                    return fraglist.size
+                }
+
+                override fun createFragment(position: Int): Fragment {
+                    return fraglist[position]
+                }
+            }
+
+            pager2.adapter = adapter
+        }
+    }
+```
+
+### 6-2. AppBar Layout
+
+- AppBar Layout은 ToolBar와 다른 view들을 관리하기 위해 제공되는 layout이다.
+- AppBar Layout은 반드시 CoordinatorLayout에 포함되어 있어야 한다.
+- AppBar Layout는 CoordinatorLayout를 통해 다른 view들과 연동될 수 있다.
+
+**CoordinatorLayout**
+
+- CoordinatorLayout은 view를 배치하기 보단 배치된 view들을 관리하기 위한 목적으로 사용한다.
+- CoordinatorLayout에 배치된 view에서 어떠한 사건이 발생하면 이를 감지하여 배치된 다른 view들에게 전달하거나 스스로 어떤 처리를 할 수 있는 layout이다.
+- 여기서는 스크롤 가능한 ToolBar를 만드는데 사용한다.
+
+**step 1: CoordinatorLayout 및 AppBarLayout 배치**
+
+![create-view-pager]({{site.url}}/img/Android/create-app-bar-layout-step-1.png){:height="400" width="700"}
+
+![create-view-pager]({{site.url}}/img/Android/create-app-bar-layout-step-2.png){:height="400" width="700"}
+
+**stpe 2: ActionBar 제거 및 ToolBar를 ActionBar로 사용**
+
+```xml
+    <resources xmlns:tools="http://schemas.android.com/tools">
+        <!-- Base application theme. -->
+        <style name="Theme.AppBarLayout" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+            <!-- Primary brand color. -->
+            <item name="colorPrimary">@color/purple_500</item>
+            <item name="colorPrimaryVariant">@color/purple_700</item>
+            <item name="colorOnPrimary">@color/white</item>
+            <!-- Secondary brand color. -->
+            <item name="colorSecondary">@color/teal_200</item>
+            <item name="colorSecondaryVariant">@color/teal_700</item>
+            <item name="colorOnSecondary">@color/black</item>
+            <!-- Status bar color. -->
+            <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+            <!-- Customize your theme here. -->
+
+            <item name="windowNoTitle">true</item>
+            <item name="windowActionBar">false</item>
+        </style>
+    </resources>
+```
+
+<br>
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            setSupportActionBar(toolbar)
+        }
+    }
+```
+
+![create-view-pager]({{site.url}}/img/Android/create-app-bar-layout-step-3.png){:height="400" width="700"}
+
+스크롤을 통해 접었다 폈다 할 수 있다.
+
+![create-view-pager]({{site.url}}/img/Android/create-app-bar-layout-step-4.png){:height="400" width="700"}
+
+또한 NestedScrollView에 view를 배치하면 toolbar의 스크롤에 따라 view의 위치가 변하는 것을 볼 수 있다. 이는 CoordinatorLayout 내부에서 발생한 특정 view의 변화를 CoordinatorLayout가 파악하고 다른 view들에게 전달하는 것 이다. 반대로 NestedScrollView를 잡고 스크롤을 하면 CoordinatorLayout는 이 역시 파악하고 다른 view(ToolBar)에게 전달할 것 이다.
+
+**step 3: ToolBar 설정**
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            setSupportActionBar(toolbar)
+
+            toolbar_layout.setCollapsedTitleTextColor(Color.WHITE) // toolbar를 감싸고 있는 layout
+            toolbar_layout.setExpandedTitleColor(Color.GREEN)
+            toolbar_layout.collapsedTitleGravity = Gravity.CENTER_HORIZONTAL
+            toolbar_layout.expandedTitleGravity = Gravity.RIGHT + Gravity.TOP
+        }
+    }
+```
+
+![create-view-pager]({{site.url}}/img/Android/create-app-bar-layout-step-5.png){:height="400" width="700"}
+
+### 6-3. ViewPager2와 TabLayout
+
+- AppBarLayout에 TabBarLayout과 ViewPager2를 통해 탭을 구성할 수 있다.
+
+**step 1: CoordinatorLayout 및 AppBarLayout 배치**
+
+![create-view-pager]({{site.url}}/img/Android/create-tab-bar-layout-step-1.png){:height="400" width="700"}
+
+![create-view-pager]({{site.url}}/img/Android/create-tab-bar-layout-step-2.png){:height="400" width="700"}
+
+**stpe 2: ActionBar 제거 및 ToolBar를 ActionBar로 사용**
+
+![create-view-pager]({{site.url}}/img/Android/create-tab-bar-layout-step-3.png){:height="400" width="700"}
+
+**stpe 3: NestedScrollView에 ViewPager2 배치 및 Fragment 클래스 생성**
+
+NestedScrollView의 fillViewport 속성 체크
+
+```kotlin
+    class SubFragment : Fragment {
+        lateinit var title:String
+
+        constructor(title:String){
+            this.title = title
+        }
+
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+            val view = inflater.inflate(R.layout.fragment_sub, null)
+
+            return view
+        }
+
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+            super.onViewCreated(view, savedInstanceState)
+
+            textView.text = title
+        }
+    }
+```
+
+<br>
+
+```kotlin
+    class MainActivity : FragmentActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            setActionBar(toolbar)
+        }
+    }
+```
+
+**stpe 4: Fragment 생성**
+
+```kotlin
+    class MainActivity : FragmentActivity() {
+        // ViewPager2에 세팅하기 위한 Fragment를 가지고 있는 arraylist
+        val fragmentList = ArrayList<Fragment>()
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            setActionBar(toolbar)
+
+            for(i in 0..9){
+                val sub = SubFragment("$i 번째 프래그먼트")
+                fragmentList.add(sub)
+            }
+
+            val adapter1 = object :FragmentStateAdapter(this){
+                override fun getItemCount(): Int {
+                    return fragmentList.size
+                }
+
+                override fun createFragment(position: Int): Fragment {
+                    return fragmentList[position]
+                }
+            }
+
+            pager2.adapter = adapter1
+        }
+    }
+```
+
+![create-view-pager]({{site.url}}/img/Android/create-tab-bar-layout-step-4.png){:height="500" width="700"}
+
+성공적으로 Fragment가 배치됐다. 하지만 아직 탭과 연결은 되지 않은 상태이다.
+
+**stpe 5: Tab과 ViewPager2 연결**
+
+```kotlin
+    class MainActivity : FragmentActivity() {
+        // ViewPager2에 세팅하기 위한 Fragment를 가지고 있는 arraylist
+        val fragmentList = ArrayList<Fragment>()
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            setActionBar(toolbar)
+
+            for(i in 0..9){
+                val sub = SubFragment("$i 번째 프래그먼트")
+                fragmentList.add(sub)
+            }
+
+            val adapter1 = object :FragmentStateAdapter(this){
+                override fun getItemCount(): Int {
+                    return fragmentList.size
+                }
+
+                override fun createFragment(position: Int): Fragment {
+                    return fragmentList[position]
+                }
+            }
+
+            pager2.adapter = adapter1
+
+            // tab과 viewpager2를 연결한다.
+            TabLayoutMediator(tabs, pager2){tab, position ->
+                tab.text = "탭 $position"
+            }.attach()
+        }
+    }
+```
+
+![create-view-pager]({{site.url}}/img/Android/create-tab-bar-layout-step-5.png){:height="500" width="700"}
+
+이때 TabLayoutMediator를 사용하기 위해서는 com.google.android.material 라이브러리 추가가 필요하다.
+
+### 6-4. DrawerLayout
 
