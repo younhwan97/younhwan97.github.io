@@ -81,7 +81,7 @@ comments: true
 ### 4-1. 안드로이드 4대 구성 요소
 - **[Activity]({{site.url}}/articles/2021-10/android-activity)**: 눈에 보이는 화면을 관리하는 실행 단위
 - **[Service]({{site.url}}/articles/2021-12/android-thread-and-service)**: 화면을 가지지 않는 실행 단위 (= 백그라운드 프로세싱)
-- **[Broadcast Receiver]({{site.url}}/articles/2021-10/android-board-cast-receover)**: OS가 메시지를 받으면 실행되는 실행 단위
+- **[Broadcast Receiver]({{site.url}}/articles/2021-10/android-board-cast-receiver)**: OS가 메시지를 받으면 실행되는 실행 단위
 - **Content Provider**: 저장된 데이터를 제공하기 위해 실행되는 실행 단위
 
 > <span style="color:#8d7edc">**안드로이드 어플리케이션**</span>은 4대 구성 요소들을 통합 관리하는 번들 개념이다.<br><br>
