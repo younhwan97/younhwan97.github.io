@@ -178,3 +178,158 @@ Applicaion 값의 경우 위와 같이 형변환을 거쳐 가져오면 된다.
 
 **내부 저장소 읽기/쓰기**
 
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            // 내부 저장소에 파일 쓰기
+            // Context.MODE_PRIVATE: 덮어 쓰기
+            // Context.MODE_APPEND: 이어서 쓰기
+            val fos = openFileOutput("data.dat", Context.MODE_PRIVATE)
+            val dos = DataOutputStream(fos)
+
+            dos.writeInt(100)
+            dos.writeDouble(11.11)
+            dos.writeBoolean(true)
+            dos.flush()
+            dos.close()
+
+            // 내부 저장소 파일 읽기
+            val fis = openFileInput("data.dat")
+            val dis = DataInputStream(fis)
+
+            textView.text = "${dis.readInt()}\n"
+            textView.append("${dis.readDouble()}\n")
+            textView.append("${dis.readBoolean()}\n")
+        }
+    }
+```
+
+![android-read-and-write-internal-storage]({{site.url}}/img/Android/android-read-and-write-internal-storage.png){: height="400"}
+
+**외부 앱 데이터 폴더 읽기/쓰기**
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+
+        // 외부 저장소의 앱 데이터 디렉토리의 경로
+        lateinit var externalStoragePath: String
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            // getExternalFilesDir 인자가 null 일 때 -> 앱 데이터 디렉토리 경로
+            // getExternalFilesDir 인자가 Environment.DIRECTORY_종류 일 때 -> 해당 종류의 디렉토리 경로
+            externalStoragePath = getExternalFilesDir(null).toString()
+
+            // 외부 저장소 쓰기
+            val fos = FileOutputStream("${externalStoragePath}/data2.dat")
+            val dos = DataOutputStream(fos)
+
+            dos.writeInt(11)
+            dos.writeDouble(11.11)
+            dos.writeBoolean(false)
+            dos.writeUTF("HELLO WORLD")
+
+            dos.flush()
+            dos.close()
+
+            // 외부 저장소 읽기
+            val fis = FileInputStream("${externalStoragePath}/data2.dat")
+            val dis = DataInputStream(fis)
+
+            textView.text = "${dis.readInt()}\n"
+            textView.append("${dis.readDouble()}\n")
+            textView.append("${dis.readBoolean()}\n")
+            textView.append("${dis.readUTF()}")
+
+            dis.close()
+
+        }
+    }
+```
+
+![android-read-and-write-external-storage]({{site.url}}/img/Android/android-read-and-write-external-storage.png){: height="400"}
+
+**Downloads 폴더 읽기/쓰기**
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            button.setOnClickListener {
+                // 파일 관리앱의 Activity를 실행
+                // Intent.ACTION_CREATE_DOCUMENT: 파일을 만들 때
+                val fileIntent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+                fileIntent.addCategory(Intent.CATEGORY_OPENABLE)
+
+                // mine type 지정
+                fileIntent.type = "*/*" // 모든 파일
+                fileIntent.type = "image/*" // 모든 이미지
+                startActivityForResult(fileIntent, 100)
+            }
+
+            button2.setOnClickListener {
+                // 파일을 읽기 위해서 파일 관리앱의 Activity를 실행
+                val fileIntent2 = Intent(Intent.ACTION_OPEN_DOCUMENT)
+                fileIntent2.type = "*/*" // 모든 파일
+                startActivityForResult(fileIntent2, 200)
+            }
+        }
+
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            super.onActivityResult(requestCode, resultCode, data)
+
+            when(requestCode){
+                100 -> {
+                    if(resultCode == RESULT_OK){
+                        // 사용자가 파일을 생성했을 때 data 객체 안에 파일의 경로가 담겨온다.
+                        val des1 = contentResolver.openFileDescriptor(data?.data!!, "w")
+                        val fos = FileOutputStream(des1?.fileDescriptor)
+                        val dos = DataOutputStream(fos)
+
+                        dos.writeInt(300)
+                        dos.writeDouble(33.33)
+                        dos.writeBoolean(true)
+                        dos.writeUTF("hello")
+
+                        dos.flush()
+                        dos.close()
+                    }
+                }
+
+                200 -> {
+                    if(resultCode== RESULT_OK){
+                        val des2 = contentResolver.openFileDescriptor(data?.data!!, "r")
+                        val fis = FileInputStream(des2?.fileDescriptor)
+                        val dis = DataInputStream(fis)
+
+                        textView.text = "${dis.readInt()}\n"
+                        textView.append("${dis.readDouble()}\n")
+                        textView.append("${dis.readBoolean()}\n")
+                        textView.append("${dis.readUTF()}")
+                    }
+                }
+            }
+        }
+    }
+```
+
+![android-read-and-write-external-storage]({{site.url}}/img/Android/android-read-and-write-downloads-storage.png){: height="400"}
+
+## <span style="color:#0f7b6c">5. raw 파일 읽어오기</span>
+
+- raw 데이터는 가공되지 않은 원천 데이터를 의미
+- 사운드나 동영상, 사진 등을 데이터 용량을 줄이기 위해 압축을 하게 되는데 이러한 가공을 거치지 않은 순수 데이터 들을 raw 데이터라고 부른다.
+- 안드로이드에서 각종 데이터 파일이나 동영상, 사운드 등의 데이터를 사용할 때 주로 사용한다. 
+
+**raw 폴더**
+
+- 실행 중 다운받거나 생성된 데이터 파일은 내부 저장소나 외부 저장소에 저장해 두었다가 필요할 때 읽어오면 된다.
+- 만약 데이터가 저장된 파일을 어플리케이션 내부에 포함 시키겠다면 raw 폴더에 저장하면 된다.
+- raw 폴더에 저장된 파일은 스트림을 손쉽게 추출할 수 있다.
