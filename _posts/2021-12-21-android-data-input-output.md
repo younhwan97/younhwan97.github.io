@@ -326,10 +326,460 @@ Applicaion 값의 경우 위와 같이 형변환을 거쳐 가져오면 된다.
 
 - raw 데이터는 가공되지 않은 원천 데이터를 의미
 - 사운드나 동영상, 사진 등을 데이터 용량을 줄이기 위해 압축을 하게 되는데 이러한 가공을 거치지 않은 순수 데이터 들을 raw 데이터라고 부른다.
-- 안드로이드에서 각종 데이터 파일이나 동영상, 사운드 등의 데이터를 사용할 때 주로 사용한다. 
+- 안드로이드에서 각종 데이터 파일이나 동영상, 사운드 등의 데이터를 사용할 때 주로 사용한다. (안드로이드에서는 XML과 이미지 파일을 제외한 모든 파일을 raw 파일로 정의)
 
 **raw 폴더**
 
 - 실행 중 다운받거나 생성된 데이터 파일은 내부 저장소나 외부 저장소에 저장해 두었다가 필요할 때 읽어오면 된다.
 - 만약 데이터가 저장된 파일을 어플리케이션 내부에 포함 시키겠다면 raw 폴더에 저장하면 된다.
 - raw 폴더에 저장된 파일은 스트림을 손쉽게 추출할 수 있다.
+
+**step 1: raw 폴더 생성**
+
+![android-read-and-write-external-storage]({{site.url}}/img/Android/create-raw-dir-step-1.png){: height="400"}
+
+![android-read-and-write-external-storage]({{site.url}}/img/Android/create-raw-dir-step-2.png){: height="400"}
+
+raw 폴더 안에 들어가는 파일의 이름은 숫자, 언더바(_)와 영문 소문자만 사용할 수 있으며, 영문 소문자로 시작해야 한다.
+
+**step 2: test 파일 생성**
+
+![android-read-and-write-external-storage]({{site.url}}/img/Android/create-raw-dir-step-3.png){: height="400"}
+
+**step 3: test 파일 읽어오기**
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            button.setOnClickListener {
+                // Stream 추출
+                val inputStream = resources.openRawResource(R.raw.data1)
+
+                // Text 파일 처리를 위한 Buffered Reader 생성
+                val isr = InputStreamReader(inputStream, "UTF-8")
+                val br = BufferedReader(isr)
+
+                var str:String? = null
+                val sb = StringBuffer()
+
+                do{
+                    str = br.readLine()
+
+                    if(str != null){
+                        sb.append("${str}\n")
+                    }
+                }while (str != null)
+
+                br.close()
+                textView.text = sb.toString()
+            }
+        }
+    }
+```
+
+![android-read-and-write-external-storage]({{site.url}}/img/Android/create-raw-dir-step-4.png){: height="400"}
+
+### 5-1. 사운드 파일 읽어오기
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+
+        var mp:MediaPlayer? = null
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            if(mp == null){
+                mp = MediaPlayer.create(this, R.raw.song)
+                mp?.start()
+            }
+        }
+    }
+```
+
+### 5-2. 동영상 파일 읽어오기
+
+video view를 추가해야 한다!
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            if(videoView.isPlaying == false){
+                // 영상 파일 경로
+                val uri = Uri.parse("android:resource://${packageName}/raw/filename")
+                videoView.setVideoURI(uri)
+                videoView.start()
+            }
+        }
+    }
+```
+
+## <span style="color:#0f7b6c">6. assets</span>
+
+- raw 데이터 파일은 raw 폴더에 담으면 스트림을 손쉽게 추출할 수 있다는 장점이 있다.
+- 허나 raw 폴더는 하위 폴더를 만드는 등 계층적으로 관리할 수 없다.
+- 만약 파일들을 계층적인 폴더 구조로 만들어 관리하겠다면 assets 폴더를 사용한다.
+- assets 폴더는 res 폴더 내부가 아니므로 리소스(R 클래스)로 관리할 수 없다.
+
+**step 1: assets 폴더 생성**
+
+![android-read-and-write-external-storage]({{site.url}}/img/Android/create-assets-step-1.png){: height="400"}
+
+![android-read-and-write-external-storage]({{site.url}}/img/Android/create-assets-step-2.png){: height="400"}
+
+위에서 언급했다시피 res 폴더가 아닌 외부에 폴더가 만들어 진 것을 볼 수 있다.
+
+**step 2: 데이터 읽어오기**
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            val inputStream = assets.open("text/data1.txt")
+            val isr = InputStreamReader(inputStream, "UTF-8")
+            val br = BufferedReader(isr)
+
+            var str : String? = null
+            val sb = StringBuffer()
+
+            do{
+                str = br.readLine()
+                if(str != null){
+                    sb.append("$str\n")
+                }
+            }while (str != null)
+
+            br.close()
+
+            textView.text = sb.toString()
+        }
+    }
+```
+
+### 6-1. 폰트 사용하기
+
+- assets 폴더에는 다양한 종류의 파일들을 담고 사용할 수 있다.
+- 특히 폰트 파일을 손쉽게 사용할 수 있도록 클래스를 제공하고 있다.
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            // 폰트 객체 생성
+            val face = Typeface.createFromAsset(assets,"font/font_file_name")
+            textView.typeface = face
+        }
+    }
+```
+
+## <span style="color:#0f7b6c">7. SQLite 데이터베이스</span>
+
+- 안드로이드에서 사용하는 내장 데이터 베이스로 표준 SQL문을 사용하는 관계형 데이터 베이스이다.
+- MySQL과 유사한 문법을 사용하고 있으며 일반적인 관계형 데이터 베이스가 가지고 있는 기능을 가지고 있다.
+
+**동작 방식**
+
+- SQLite 데이터베이스는 임베디드형 데이터베이스로써 데이터베이스를 사용하는 어플리케이션에 셋팅되는 데이터 베이스이다.
+- 안드로이드는 안드로이드 OS에 내장되어 있으며 개발자가 만드는 어플리케이션은 안드로이드 OS에게 쿼리문을 전달하고 안드로이드 OS가 직접 데이터 베이스에 대한 처리를 하게된다.
+- 즉 단말기 내부에 설치된 로컬 데이터베이스로써 어플리케이션이 관리하는 것이 아닌 운영체제에 의해 관리되고, 다른 단말기에서는 접근할 수 없다.
+
+**작성 방식**
+
+- 안드로이드에서의 SQLite 데이터베이스 사용은 쿼리문을 이용하는 방법과 제공되는 클래스를 이용하는 방법 두 가지가 있다.
+- 쿼리문을 이용하는 방식은 일반적인 SQL문을 사용하며 MySQL과 유사한 문법을 지닌다.
+- 클래스를 이용하는 방법은 개발자가 정해줘야 하는 몇 가지 정보를 제공하면 쿼리문이 생성되고 실행되는 구조이다.
+
+**SQLite OpenHelper**
+
+- 이름 그대로 안드로이드 SQLite 데이터베이스 오픈을 도와주는 클래스다.
+- 안드로이드에서 SQLite 데이터베이스를 사용하려면 SQLiteOpenHelper를 상속받은 클래스를 만들어야한다.
+- 이 클래스는 사용할 데이터베이스의 이름을 설정하는 것 뿐만 아니라 다음 기능들을 제공한다.
+- 지정된 데이터베이스 파일을 사용하려고 할 때 파일이 없으면 파일을 만들고 onCreate 메서드를 호출한다. 이 메서드에서는 테이블을 만드는 쿼리를 실행해주면 된다.
+- 어플리케이션을 서비스하다가 데이터베이스 구조를 변경하려면 데이터베이스의 버전을 변경하면 된다. 버전을 변경하면 onUpgrade 메서드가 호출되고 여기에서 테이블을 새로운 구조로 변경해주는 작업을 해주면 된다.
+
+즉 onCreate 메서드에서는 **항상 최신의 테이블구조**를 만들 수 있는 쿼리문이, onUpgrade에서는 테이블의 구조가 **변경되기 전에서 새로운 구조로 변경**을 해주는 쿼리가 작성되면 된다.
+
+**step 1: 클래스 생성**
+
+![android-read-and-write-external-storage]({{site.url}}/img/Android/create-sql-lite-db-step-1.png){: height="400" width="700"}
+
+```kotlin
+    class dbHelper: SQLiteOpenHelper {
+
+        constructor(context: Context): super(context, "Test.db", null, 1)
+
+        // 데이터 베이스 파일이 없는 경우 파일을 만들고 자동으로 호출된다.
+        // 어플리케이션 설치 후 최초로 접근시 호출
+        // 최신 형태의 테이블을 생성하는 쿼리문을 작성한다.
+        override fun onCreate(p0: SQLiteDatabase?) {
+            TODO("Not yet implemented")
+        }
+
+        // 버전이 변경된 경우 호출
+        // 기존에 앱을 사용하는 사용자를 위해 테이블의 구조를 최신 형태로 만들어주는 쿼리문을 작성한다.
+        override fun onUpgrade(p0: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+            when(oldVersion){
+                1 -> {
+                    // 1에서 2로 변경되었을 때
+                }
+                2 -> {
+                    // 2에서 3로 변경되었을 때
+                }
+            }
+        }
+    }
+```
+
+**step 2: DB Open**
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            val helper = dbHelper(this)
+            
+        }
+    }
+```
+
+**step 3: 테이블 생성**
+
+```kotlin
+    class dbHelper: SQLiteOpenHelper {
+
+        constructor(context: Context): super(context, "Test.db", null, 1)
+
+        // 데이터 베이스 파일이 없는 경우 파일을 만들고 자동으로 호출된다.
+        // 어플리케이션 설치 후 최초로 접근시 호출
+        // 최신 형태의 테이블을 생성하는 쿼리문을 작성한다.
+        override fun onCreate(p0: SQLiteDatabase?) {
+            val sql = """
+                create table TestTable
+                    (idx integer primary key autoincrement,
+                    textData text not null,
+                    intData integer not null,
+                    floatData real not null,
+                    dateData date not null)
+            """.trimIndent()
+            p0?.execSQL(sql)
+        }
+
+        // 버전이 변경된 경우 호출
+        // 기존에 앱을 사용하는 사용자를 위해 테이블의 구조를 최신 형태로 만들어주는 쿼리문을 작성한다.
+        override fun onUpgrade(p0: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+            when(oldVersion){
+                1 -> {
+                    // 1에서 2로 변경되었을 때
+                }
+                2 -> {
+                    // 2에서 3로 변경되었을 때
+                }
+            }
+        }
+    }
+```
+
+**step 4: insert/select/upgrade/delete query**
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            insertBtn.setOnClickListener {
+                val helper = dbHelper(this)
+
+                val query = """
+                    insert into TestTable (textData, intData, floatData, dateData)
+                    values (?, ?, ?, ?)
+                """.trimIndent()
+
+                // ?에 바인딩될 값
+                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val now = sdf.format(Date())
+
+                val arg1 = arrayOf("문자열 1", "100", "11.11", now) // 타입에 관련없이 문자열
+                val arg2 = arrayOf("문자열 2", "200", "22.22", now)
+
+                // 저장
+                helper.writableDatabase.execSQL(query, arg1)
+                helper.writableDatabase.execSQL(query, arg2)
+
+                helper.writableDatabase.close()
+
+                textView.text = "저장 완료"
+            }
+
+            selectBtn.setOnClickListener {
+                val helper = dbHelper(this)
+
+                val query = "select * from TestTable"
+
+                // 쿼리 실행
+                val cl = helper.writableDatabase.rawQuery(query, null)
+                textView.text = ""
+
+                while (cl.moveToNext()){ // 가져올 데이터가 남아있다면 moveToNext 메서드가 true를 반환
+                    // 가져올 컬럼의 인덱스 번호를 추출
+                    val idx1 = cl.getColumnIndex("idx")
+                    val idx2 = cl.getColumnIndex("textData")
+                    val idx3 = cl.getColumnIndex("intData")
+                    val idx4 = cl.getColumnIndex("floatData")
+                    val idx5 = cl.getColumnIndex("dateData")
+
+                    // 데이터를 추출한다.
+                    val idx = cl.getInt(idx1)
+                    val textData = cl.getString(idx2)
+                    val intData = cl.getInt(idx3)
+                    val floatData = cl.getFloat(idx4)
+                    val dateData = cl.getString(idx5)
+
+                    textView.append("${idx}\n")
+                    textView.append("${textData}\n")
+                    textView.append("${intData}\n")
+                    textView.append("${floatData}\n")
+                    textView.append("${dateData}\n")
+                }
+
+                helper.writableDatabase.close()
+            }
+
+            updateBtn.setOnClickListener {
+                val helper = dbHelper(this)
+
+                val query = """
+                    update TestTable set textData = ? where idx = ?
+                """.trimIndent()
+
+                // ?에 바인딩될 값 세팅
+                val arg1 = arrayOf("문자열3", 1)
+
+                helper.writableDatabase.execSQL(query, arg1)
+                helper.writableDatabase.close()
+            }
+
+            deleteBtn.setOnClickListener {
+                val helper = dbHelper(this)
+
+                val query = """
+                    delete from TestTable where idx = ? 
+                """.trimIndent()
+
+                // ?에 바인딩될 값 세팅
+                val arg1 = arrayOf("1")
+
+                helper.writableDatabase.execSQL(query,arg1)
+                helper.writableDatabase.close()
+            }
+        }
+    }
+```
+
+### 7-1. 제공되는 클래스를 이용해 SQLite 데이터베이스 사용
+
+- 안드로이드는 SQLite 데이터베이스 사용 시 직접 직접 쿼리문을 작성하는 것 분만 아니라 제공되는 클래스를 이용하는 방법을 제공한다.
+- 코드 구현은 대부분 비슷하며 쿼리문 작성 대신에 클래스를 사용하면 된다.
+
+**ContentValue**
+
+- 클래스를 이용하는 방법을 사용할 때 가장 중요한 클래스
+- ContentValue 클래스는 값을 저장할 때 이름을 부여하는 클래스로써 값을 저장할 때 사용하는 이름은 테이블의 컬럼이름과 매칭된다.
+- ContentValue에 저장한 데이터는 테이블의 칼럼과 매칭되어 insert, update 등에 사용된다.
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            insertBtn.setOnClickListener {
+                val helper = DBHelper(this)
+
+                // 컬럼에 저장될 데이터를 관리하는 객체
+                val cv1 = ContentValues()
+                cv1.put("textData","문자열1")
+                cv1.put("intData",100)
+                cv1.put("floatData", 11.11)
+
+                helper.writableDatabase.insert("TestTable", null, cv1)
+
+                val cv2 = ContentValues()
+                cv2.put("textData", "문자열2")
+                cv2.put("intData", 200)
+                cv2.put("floatData", 22.22)
+
+                helper.writableDatabase.insert("TestTable", null, cv2)
+
+                helper.writableDatabase.close()
+            }
+
+            selectBtn.setOnClickListener {
+                val helper = DBHelper(this)
+
+                // 첫 번째: 가져올 데이터가 있는 테이블의 이름
+                // 두 번째: 가져올 컬럼의 이름이 담겨져 있는 문자열 배열, null일 경우에는 모든 컬럼
+                // 세 번째: 조건절 (idx = ? and name = ?), 조건절이 필요없으면 null
+                // 네 번째: 조건절 ?에 바인딩 될 값 배열, 세 번째가 null이면 여기도 null
+                // 다섯 번째: Group By 기준 컬럼
+                // 여섯 번째: having 절에 들어갈 조건문
+                // 일곱 번째: 정렬 기준
+                val c1 = helper.writableDatabase.query("TestTable",null,null,
+                    null,null,null,null)
+
+                while (c1.moveToNext()){
+                    val idx1 = c1.getColumnIndex("idx")
+                    val idx2 = c1.getColumnIndex("textData")
+                    val idx3 = c1.getColumnIndex("intData")
+                    val idx4 = c1.getColumnIndex("floatData")
+
+                    val idx = c1.getInt(idx1)
+                    val textData = c1.getString(idx2)
+                    val intData = c1.getInt(idx3)
+                    val floatData = c1.getFloat(idx4)
+                }
+
+                helper.writableDatabase.close()
+            }
+
+            updateBtn.setOnClickListener {
+                val helper = DBHelper(this)
+
+                val cv = ContentValues()
+                cv.put("textData", "문자열3")
+
+                val where = "idx = ?"
+                val args = arrayOf("1")
+
+                // 테이블 명, ContentValues, 조건절, 조건절에 바인딩될 값
+                helper.writableDatabase.update("TestTable", cv, where, args)
+                helper.writableDatabase.close()
+            }
+
+            deleteBtn.setOnClickListener {
+                val helper = DBHelper(this)
+
+                val where = "idx = ?"
+                val args = arrayOf("1")
+
+                // 테이블 명, 조건절, 조건절에 바인딩될 값
+                helper.writableDatabase.delete("TestTable", where, args)
+                helper.writableDatabase.close()
+            }
+        }
+    }
+```
