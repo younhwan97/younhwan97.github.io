@@ -783,3 +783,57 @@ video view를 추가해야 한다!
         }
     }
 ```
+
+## <span style="color:#0f7b6c">8. Preferences</span>
+
+- 안드로이드의 저장 방식 중 하나로 어플리케이션의 데이터를 간단하게 저장할 수 있는 수단이다.
+- 많은 양의 데이터를 저장할 때는 SQLite를 사용하고 소규모의 데이터를 저장할 때 Preference를 사용할 수 있다.
+- 일반적으로 SQLite 데이터베이스에는 학생들의 정보 등과 같은 다수의 매개체에 대한 데이터를 저장할 때 사용하고, 어플리케이션 설정 데이터와 같이 유일한 데이터들을 기록할 때 Preferences를 사용한다.
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setContentView(R.layout.activity_main)
+
+            // Preferences 객체를 추출
+            // Context.MODE_APPEND: 기존에 저장된 데이터를 유지하고 새로운 데이터도 추가
+            // Context.MODE_PRIVATE: 기존에 저장된 데이터를 초기화하고 새로운 데이터 추가
+            val pref = getSharedPreferences("data", Context.MODE_PRIVATE)
+
+            // 데이터 저장을 위한 객체 추출
+            val editor = pref.edit()
+
+            // 저장
+            editor.putBoolean("data1", true)
+            editor.putInt("data2", 100)
+            editor.putFloat("data3", 11.11F)
+            editor.putString("data4", "문자열")
+            editor.putLong("data5", 100L)
+
+            val set = HashSet<String>()
+            set.add("문자열1")
+            set.add("문자열2")
+            set.add("문자열3")
+            editor.putStringSet("data6", set)
+
+            editor.commit()
+
+            // Pref 데이터 읽어오기
+            val pref2 = getSharedPreferences("data", Context.MODE_PRIVATE)
+
+            val data1 = pref2.getBoolean("data1", false) // 2번째 인자로 기본값을 설정
+            val data2 = pref2.getInt("data2", 0)
+            val data3 = pref2.getFloat("data3", 0.0F)
+            val data4 = pref2.getString("data4","")
+            val data5 = pref2.getLong("data5", 0L)
+            val data6 = pref2.getStringSet("data6", null)
+        }
+    }
+```
+
+### 8-1. Preferences Screen
+
+- UI를 통해서 Preferences를 사용할 수 있도록 제공되는 개념 (ex 환경 설정 스크린을 보다 쉽게 만들 수 있도록)
+- PreferenceFragment를 사용하며 저장 기능까지 모두 구현 되어 있다.
+
