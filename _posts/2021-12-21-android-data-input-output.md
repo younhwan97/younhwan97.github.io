@@ -837,3 +837,57 @@ video view를 추가해야 한다!
 - UI를 통해서 Preferences를 사용할 수 있도록 제공되는 개념 (ex 환경 설정 스크린을 보다 쉽게 만들 수 있도록)
 - PreferenceFragment를 사용하며 저장 기능까지 모두 구현 되어 있다.
 
+**step 1: Preferences Screen XML 생성**
+
+![create-pref-screen-step-1]({{site.url}}/img/Android/create-pref-screen-step-1.png){: height="400" width="700"}
+
+![create-pref-screen-step-2]({{site.url}}/img/Android/create-pref-screen-step-2.png){: height="400" width="700"}
+
+![create-pref-screen-step-2]({{site.url}}/img/Android/create-pref-screen-step-3.png){: height="400" width="700"}
+
+![create-pref-screen-step-2]({{site.url}}/img/Android/create-pref-screen-step-4.png){: height="400" width="700"}
+
+**step 2: PreferenceFragment 라이브러리 셋팅**
+
+![create-pref-screen-step-2]({{site.url}}/img/Android/create-pref-screen-step-5.png){: height="400" width="700"}
+
+**step 3: PreferenceFragment 생성**
+
+```kotlin
+    class SettingFragment: PreferenceFragmentCompat() {
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            addPreferencesFromResource(R.xml.pref)
+        }
+    }
+```
+
+**step 4: 다양한 위젯 추가**
+
+![create-pref-screen-step-2]({{site.url}}/img/Android/create-pref-screen-step-6.png){: height="400" width="700"}
+
+- PreferenceCategory: 웨젯을 그룹핑
+- defaultValue: 최초에 저장될 값
+- key: 데이터가 저장될 때 사용될 이름
+- title: 표시될 문자열
+
+**step 5: 저장된 값 확인**
+
+```kotlin
+    class MainActivity : AppCompatActivity() {
+        val settingFragment = SettingFragment()
+
+            override fun onCreate(savedInstanceState: Bundle?) {
+                super.onCreate(savedInstanceState)
+                setContentView(R.layout.activity_main)
+
+                val tran = supportFragmentManager.beginTransaction()
+                tran.replace(R.id.container, settingFragment)
+                tran.commit()
+
+                val pref = PreferenceManager.getDefaultSharedPreferences(this)
+
+                val data1 = pref.getString("data1", null)
+                Log.d("test", "${data1}")
+            }
+    }
+```
