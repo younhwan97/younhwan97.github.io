@@ -153,7 +153,7 @@ AWS RDS 서비스 페이지로 이동해 서브넷 그룹을 생성할 차례다
 
 ![AWS create vpc]({{site.url}}/img/AWS/aws-create-vpc-step-14.png){: height="500" width="800"}
 
-VPC를 선택하고, 서브넷 추가 섹션에서 가용 영역 및 서브넷을 선택한다. 앞서 서브넷을 'ap-northeast-2a'와 'ap-northeast-2b'에서 생성했으므로 가용 영역으로 'ap-northeast-2a'와 'ap-northeast-2b'를 선택하고 **[서브넷]**에서 IPv4 CIDR 블록 10.0.1.0/24 및 10.0.2.0/24용 서브넷을 선택했다. 그리고 **[생성]** 버튼을 클릭해 서브넷 그룹을 생성한다.
+VPC를 선택하고, 서브넷 추가 섹션에서 가용 영역 및 서브넷을 선택한다. 앞서 서브넷을 'ap-northeast-2a'와 'ap-northeast-2b'에서 생성했으므로 가용 영역으로 'ap-northeast-2a'와 'ap-northeast-2b'를 선택하고 **[서브넷]**에서 IPv4 CIDR 블록 10.0.1.0/24 및 10.0.2.0/24용 서브넷을 선택했다. 그리고 **[생성]** 버튼을 클릭해 서브넷 그룹을 생성한다. (데이터 베이스를 사용할 서브넷을 서브넷 그룹에 추가하면 된다.)
 
 ![AWS create vpc]({{site.url}}/img/AWS/aws-create-vpc-step-15.png){: height="500" width="800"}
 
