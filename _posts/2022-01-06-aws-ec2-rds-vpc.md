@@ -8,7 +8,6 @@ comments: true
 
 서비스를 운영하는데 가장 보안이 중요한 영역은 아마 데이터베이스가 될 것이다. 때문에 우리는 데이터베이스를 private 상태에서 관리할 필요가 있다. 이러한 상황에서 사용해 볼 수 있는 방법이 VPC를 이용한 방법이다. 
 
-
 ## <span style="color:#0f7b6c">1. VPC란?</span>
 
 먼저 VPC가 무엇인지 간단하게 알아볼 필요가 있을 것 같다. 아마존에서 소개하는 VPC는 "Amazon Virtual Private Cloud(Amazon VPC)를 이용하면 사용자가 정의한 가상 네트워크로 AWS 리소스를 시작할 수 있습니다. 이 가상 네트워크는 의 확장 가능한 인프라를 사용한다는 이점과 함께 고객의 자체 데이터 센터에서 운영하는 기존 네트워크와 매우 유사합니다"이다. (출처: [Amazon VPC란 무엇인가?](https://docs.aws.amazon.com/ko_kr/vpc/latest/userguide/what-is-amazon-vpc.html))
