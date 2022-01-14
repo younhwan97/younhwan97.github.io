@@ -165,7 +165,7 @@ IT 서비스를 운영하는 회사의 경우 **서버 비용**, **스토리지 
 
 #### 2-3. 결제
 
-###### 2-3-1. AWS Organizations
+##### 2-3-1. AWS Organizations
 
 회사에는 다양한 사업부가 존재하고 하나의 사업부에서도 여러 프로젝트가 진행된다. 이에 따라 여러 AWS 계정이 필요할 수 있다. 각각의 계정을 따로 사용할 수 있지만 통합 결제와 할인을 위해 계정을 그룹화 할 필요가 있다. 이때 사용하는 서비스가 AWS Organizations다. 
 
@@ -177,7 +177,7 @@ OU는 그룹화를 위한 컨테이너이며 다른 OU에 포함될 수 있다. 
 
 AWS Organizations을 사용함으로써 **정책 기반의 관리**, **그룹 기반의 계정 관리** 및 **통합 결제** 등의 이점을 얻을 수 있다.
 
-###### 2-3-2. AWS Billing and Cost Management
+##### 2-3-2. AWS Billing and Cost Management
 
 Billing and Cost Management는 AWS 결제 관련 서비스이다. AWS 청구서를 결제하고 사용량을 모니터링하고 (비용) 예산을 책정하는데 사용할 수 있다. 
 
