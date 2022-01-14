@@ -1,17 +1,12 @@
+- name: AWS Academy Cloud Foundations
+  link: https://aws.amazon.com/ko/training/awsacademy/
+  date: 2022.01.03 - 01.12
+
 - name: 전남대학교 소프트웨어공학과
   link: https://sw.jnu.ac.kr/sites/sw/index.do
   date: 2016 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
-  descr: <br><ul><li style="font-size:12px">✔︎국가우수장학금(이공계) 2년 지원 유형 수혜</li><li style="font-size:12px">✔︎2022년 졸업 예정</li></ul>
+  descr: <br><ul><li style="font-size:12px">✔︎국가우수장학금(이공계) 2년 지원 유형 수혜</li></ul>
 
 - name: 서강고등학교
   link: http://seokang.gen.hs.kr/
   date: 2013 - 2016
-
-#- name: Massachusets Instutite of Technology
-#  link: http://web.mit.edu/
-#  date: 2011 - <i class="fa fa-clock-o" aria-hidden="true" title="Until Now"></i>
-#  descr: <br> (expected graduation in 2019)
-
-#- name: Harvard
-#  link: http://www.harvard.edu/
-#  date: 2007 - 2011
